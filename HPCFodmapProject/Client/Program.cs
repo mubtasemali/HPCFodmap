@@ -2,6 +2,9 @@ using HPCFodmapProject.Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Syncfusion.Blazor;
+
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzE3MDUzNUAzMjM1MmUzMDJlMzBZcTBpOWxkWmM3aGg5RkRiMDIySlhwY2g4cDZ4Nm9oWkNSOTlNS3R1U25rPQ==");
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -14,5 +17,6 @@ builder.Services.AddHttpClient("HPCFodmapProject.ServerAPI", client => client.Ba
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("HPCFodmapProject.ServerAPI"));
 
 builder.Services.AddApiAuthorization();
+builder.Services.AddSyncfusionBlazor();
 
 await builder.Build().RunAsync();
