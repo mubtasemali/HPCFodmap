@@ -10,13 +10,13 @@ namespace HPCFodmapProject.Server.Models
     public class ApplicationUser : IdentityUser
     {
         [Key]
-        int UserID { get; set; }
-        string firstName { get; set; }
-        string lastName { get; set; }
+        int userid { get; set; }
+        string firstname { get; set; }
+        string lastname { get; set; }
         string email { get; set; }
         //might want to handle differently?
         string password { get; set; }
-        DateTime registrationDate { get; set; }
-        DateTime lastLogin { get; set; }
+        DateTime registrationdate { get; set; }
+        DateTime lastlogin { get; set; }
     }
 }
