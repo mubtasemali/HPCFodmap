@@ -9,8 +9,8 @@ namespace HPCFodmapProject.Server.Models
 {
     public class ApplicationUser : IdentityUser
     {
-       public string firstname { get; set; }
-       public string lastname { get; set; }
+        public string? firstname { get; set; } = "temp";
+        public string? lastname { get; set; } = "temp";
 
        public DateTime registrationdate { get; set; }
        public DateTime lastlogin { get; set; }
