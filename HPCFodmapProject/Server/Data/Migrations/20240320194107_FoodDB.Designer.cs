@@ -4,6 +4,7 @@ using HPCFodmapProject.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HPCFodmapProject.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240320194107_FoodDB")]
+    partial class FoodDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,20 +217,6 @@ namespace HPCFodmapProject.Server.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("firstname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("lastlogin")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("lastname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("registrationdate")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -240,131 +228,6 @@ namespace HPCFodmapProject.Server.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("HPCFodmapProject.Server.Models.Food", b =>
-                {
-                    b.Property<int>("FoodID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FoodID"), 1L, 1);
-
-                    b.Property<string>("foodName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("issues")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("FoodID");
-
-                    b.ToTable("Food");
-                });
-
-            modelBuilder.Entity("HPCFodmapProject.Server.Models.FoodIngredients", b =>
-                {
-                    b.Property<int>("FoodIngredientsID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FoodIngredientsID"), 1L, 1);
-
-                    b.Property<int>("FoodID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IngredientsID")
-                        .HasColumnType("int");
-
-                    b.HasKey("FoodIngredientsID");
-
-                    b.HasIndex("FoodID");
-
-                    b.HasIndex("IngredientsID");
-
-                    b.ToTable("FoodIngredients");
-                });
-
-            modelBuilder.Entity("HPCFodmapProject.Server.Models.Ingredients", b =>
-                {
-                    b.Property<int>("IngredientsID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IngredientsID"), 1L, 1);
-
-                    b.Property<string>("IngredientsName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("inFodMap")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("severity")
-                        .HasColumnType("int");
-
-                    b.HasKey("IngredientsID");
-
-                    b.ToTable("Ingredients");
-                });
-
-            modelBuilder.Entity("HPCFodmapProject.Server.Models.Intake", b =>
-                {
-                    b.Property<int>("IntakeID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IntakeID"), 1L, 1);
-
-                    b.Property<int>("FoodID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IntakeID");
-
-                    b.HasIndex("FoodID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("Intake");
-                });
-
-            modelBuilder.Entity("HPCFodmapProject.Server.Models.WhiteList", b =>
-                {
-                    b.Property<int>("WhiteListID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WhiteListID"), 1L, 1);
-
-                    b.Property<int>("IngredientsID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("userIsAffected")
-                        .HasColumnType("int");
-
-                    b.HasKey("WhiteListID");
-
-                    b.HasIndex("IngredientsID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("WhiteList");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -504,63 +367,6 @@ namespace HPCFodmapProject.Server.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("HPCFodmapProject.Server.Models.FoodIngredients", b =>
-                {
-                    b.HasOne("HPCFodmapProject.Server.Models.Food", "Food")
-                        .WithMany("FoodIngredients")
-                        .HasForeignKey("FoodID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HPCFodmapProject.Server.Models.Ingredients", "Ingredients")
-                        .WithMany("FoodIngredients")
-                        .HasForeignKey("IngredientsID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Food");
-
-                    b.Navigation("Ingredients");
-                });
-
-            modelBuilder.Entity("HPCFodmapProject.Server.Models.Intake", b =>
-                {
-                    b.HasOne("HPCFodmapProject.Server.Models.Food", "Food")
-                        .WithMany("Intake")
-                        .HasForeignKey("FoodID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HPCFodmapProject.Server.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("Intake")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Food");
-                });
-
-            modelBuilder.Entity("HPCFodmapProject.Server.Models.WhiteList", b =>
-                {
-                    b.HasOne("HPCFodmapProject.Server.Models.Ingredients", "Ingredients")
-                        .WithMany("WhiteLists")
-                        .HasForeignKey("IngredientsID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HPCFodmapProject.Server.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("WhiteLists")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Ingredients");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -610,27 +416,6 @@ namespace HPCFodmapProject.Server.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("HPCFodmapProject.Server.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("Intake");
-
-                    b.Navigation("WhiteLists");
-                });
-
-            modelBuilder.Entity("HPCFodmapProject.Server.Models.Food", b =>
-                {
-                    b.Navigation("FoodIngredients");
-
-                    b.Navigation("Intake");
-                });
-
-            modelBuilder.Entity("HPCFodmapProject.Server.Models.Ingredients", b =>
-                {
-                    b.Navigation("FoodIngredients");
-
-                    b.Navigation("WhiteLists");
                 });
 #pragma warning restore 612, 618
         }
