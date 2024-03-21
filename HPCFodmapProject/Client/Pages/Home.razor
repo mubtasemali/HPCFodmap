@@ -1,0 +1,27 @@
+﻿@page "/home"
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Buttons
+
+<PageTitle>Home</PageTitle>
+
+<center><h1>Gut Guardian</h1></center>
+
+<SfGrid @ref="Grid" DataSource="@Orders" Height="500">
+    <GridColumns>
+        <GridColumn HeaderText="Food Intake" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+        <GridColumn HeaderText="Flag" TextAlign="TextAlign.Right" Width="100"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<SfButton CssClass="e-info">FAQ</SfButton>
+<SfButton CssClass="e-info">Monash</SfButton>
+<SfButton CssClass="e-info">Docs</SfButton>
+
+<!--<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>-->
+
+@code {
+    private SfGrid<int> Grid;
+    public List<int> Orders = new List<int> {1,2,3,4,5};
+}

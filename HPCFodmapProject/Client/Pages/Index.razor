@@ -1,11 +1,29 @@
 ﻿@page "/"
 @using Syncfusion.Blazor.Spinner
 
-<SfSpinner Visible=true></SfSpinner>
+<!--<SfSpinner Visible=true></SfSpinner>-->
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Gut Guardian</PageTitle>
 
-<h1><center>Gut Guardian</center>></h1>
+<h1><center>Gut Guardian</center></h1>
 
-Welcome to your new app.
+<!--REPLACE WITH LOGO -->
+<center><img src="https://images.freeimages.com/image/previews/438/pumpkin-delight-png-design-5691885.png?fmt=webp&w=500" alt="logo"/></center>
+
+<h2>
+    <center>
+        Welcome to Gut Guardian!
+        <AuthorizeView>
+            <NotAuthorized>
+                Please <a href="authentication/login">login</a> or <a href="authentication/register">register</a> to continue.
+            </NotAuthorized>
+            <Authorized>
+                Visit the <a href="/home">Home Dashboard</a> to get started tracking FODMAPs!
+            </Authorized>
+        </AuthorizeView>
+        <br />
+        <br />
+        Questions on FODMAPs? Visit Monash University's <a href="https://www.monashfodmap.com/about-fodmap-and-ibs/" target="_blank" rel="noopener noreferrer">FAQ</a>!
+    </center>
+</h2>
 
