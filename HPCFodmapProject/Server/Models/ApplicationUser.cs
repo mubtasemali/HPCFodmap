@@ -9,14 +9,16 @@ namespace HPCFodmapProject.Server.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        [Key]
-        int userid { get; set; }
-        string firstname { get; set; }
-        string lastname { get; set; }
-        string email { get; set; }
-        //might want to handle differently?
-        string password { get; set; }
-        DateTime registrationdate { get; set; }
-        DateTime lastlogin { get; set; }
+       public string firstname { get; set; }
+       public string lastname { get; set; }
+
+       public DateTime registrationdate { get; set; }
+       public DateTime lastlogin { get; set; }
+
+        [InverseProperty("ApplicationUser")]
+        public virtual ICollection<Intake> Intake { get; } = new List<Intake>();
+
+        [InverseProperty("ApplicationUser")]
+        public virtual ICollection<WhiteList> WhiteLists { get; } = new List<WhiteList>();
     }
 }

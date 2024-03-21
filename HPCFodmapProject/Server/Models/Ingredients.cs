@@ -10,10 +10,17 @@ namespace HPCFodmapProject.Server.Models
     {
         [Key]
         public int IngredientsID { get; set; }
-        public string IngredientsName { get; set;}
+        public string IngredientsName { get; set; }
         public int severity { get; set; }
         //says bit in db not sure if this should be bool
-        public int inFodMap { get; set; }
+        public bool inFodMap { get; set; }
+
+        [InverseProperty("Ingredients")]
+        public virtual ICollection<WhiteList> WhiteLists { get; } = new List<WhiteList>();
+
+        [InverseProperty("Ingredients")]
+        public virtual ICollection<FoodIngredients> FoodIngredients { get; } = new List<FoodIngredients>();
 
     }
+        
 }

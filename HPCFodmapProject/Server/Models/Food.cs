@@ -13,5 +13,13 @@ namespace HPCFodmapProject.Server.Models
         public string foodName { get; set; }
         public string issues { get; set; }
 
+
+        [InverseProperty("Food")]
+        public virtual ICollection<Intake> Intake { get; } = new List<Intake>();
+
+        [InverseProperty("Food")]
+        public virtual ICollection<FoodIngredients> FoodIngredients { get; } = new List<FoodIngredients>();
+
+
     }
 }

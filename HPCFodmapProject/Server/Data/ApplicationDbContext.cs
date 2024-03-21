@@ -15,13 +15,19 @@ namespace HPCFodmapProject.Server.Data
         {
         }
 
-        //ADDING THIS BREAKS THE LOG IN BUT THIS IS NEEDED FOR ADDING THE TABLES
-        //adding to add table
+        //adding this breaks the log in but this is needed for adding the tables
+        // adding to add table
+     
         public DbSet<ApplicationUser> ApplicationUser => Set<ApplicationUser>();
+
         public DbSet<Food> Food => Set<Food>();
+
         public DbSet<FoodIngredients> FoodIngredients => Set<FoodIngredients>();
+
         public DbSet<Ingredients> Ingredients => Set<Ingredients>();
+
         public DbSet<Intake> Intake => Set<Intake>();
+
         public DbSet<WhiteList> WhiteList => Set<WhiteList>();
 
 
