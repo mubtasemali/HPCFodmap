@@ -11,7 +11,6 @@ namespace HPCFodmapProject.Server.Models
         [Key]
         public int FoodID { get; set; }
         public string foodName { get; set; }
-        public string? issues { get; set; }
 
 
         [InverseProperty("Food")]
