@@ -25,13 +25,14 @@ namespace HPCFodmapProject.Server.Controllers
         public async Task<ApplicationUserDto> GetUserInfoByUserName(string userName)
         {
             //sends error message back if no userName is entered
-            //if (userName == null)
-            //{
-            //    return NotFound(new {Messgae = ""});
-            //}
-            //setting value just to test
-            userName = "maiq@cat.com";
-            var user = _context.Users.SingleOrDefault(item => item.UserName == userName);
+            if (userName == null)
+            {
+                //setting value just to test
+                userName = "maiq@cat.com";
+                //return NotFound(new {Messgae = ""});
+            }
+
+                var user = _context.Users.SingleOrDefault(item => item.UserName == userName);
 
 
 
