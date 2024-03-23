@@ -14,6 +14,7 @@ namespace HPCFodmapProject.Shared
 
        public DateTime registrationdate { get; set; }
        public DateTime lastlogin { get; set; }
+       public string? phoneNumber { get; set; }
 
     }
 }
