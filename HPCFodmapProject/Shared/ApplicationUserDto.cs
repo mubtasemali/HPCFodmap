@@ -9,11 +9,11 @@ namespace HPCFodmapProject.Shared
 {
     public class ApplicationUserDto
     {
-        public string? firstname { get; set; } = "temp";
-        public string? lastname { get; set; } = "temp";
+        public string? firstname { get; set; } 
+        public string? lastname { get; set; } 
 
-       public DateTime registrationdate { get; set; }
-       public DateTime lastlogin { get; set; }
+       //public DateTime registrationdate { get; set; }
+       //public DateTime lastlogin { get; set; }
        public string? phoneNumber { get; set; }
 
     }

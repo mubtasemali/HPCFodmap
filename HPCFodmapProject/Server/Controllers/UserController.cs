@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-//added
-using AutoMapper;
+
+
 namespace HPCFodmapProject.Server.Controllers
 {
     public class UserController : Controller
     {
-        //pasted code
+       
         private readonly ApplicationDbContext _context;
         public UserController(ApplicationDbContext context)
         {
@@ -21,15 +21,17 @@ namespace HPCFodmapProject.Server.Controllers
         }
 
         [HttpGet]
-        [Route("api/user")]
-        public async Task<ApplicationUserDto> GetUserInfoByUserName(string userName)
+        [Route("api/get-user")]
+        public async Task<ActionResult<ApplicationUserDto>> GetUserInfoByUserName(string userName)
         {
-            //sends error message back if no userName is entered
+
             if (userName == null)
             {
-                //setting value just to test
-                userName = "maiq@cat.com";
-                //return NotFound(new {Messgae = ""});
+               return NotFound();
+            }
+            if (_context.Users == null)
+            {
+                return NotFound();
             }
 
                 var user = _context.Users.SingleOrDefault(item => item.UserName == userName);
@@ -43,49 +45,45 @@ namespace HPCFodmapProject.Server.Controllers
                 phoneNumber = user.PhoneNumber
             };
 
-
             return userDto;
         }
 
         
 
-       
-
-        // POST: UserController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [HttpPut]
+        //[ValidateAntiForgeryToken]
+        [Route("api/update-user-info")]
+        public async Task <IActionResult> UpdateUserInfo(string userName, ApplicationUserDto User)
         {
+
+            if (userName == null)
+            {
+                return NotFound();
+            }
+            if (_context.Users == null)
+            {
+                return NotFound();
+            }
+
+            var user = _context.Users.SingleOrDefault(item => item.UserName == userName);
+            user.firstname = User.firstname;
+            user.lastname = User.lastname;
+            user.PhoneNumber = User.phoneNumber;
+
             try
             {
-                return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
             }
-            catch
+            catch (DbUpdateConcurrencyException)
             {
-                return View();
+                return NotFound();
             }
+
+            return NoContent();
         }
 
-        //// GET: UserController/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
 
-        //// POST: UserController/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+       
     }
 }
 
