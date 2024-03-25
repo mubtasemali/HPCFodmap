@@ -10,7 +10,6 @@ namespace HPCFodmapProject.Shared
  
     public class IntakeDto
     {
-        public int IntakeID { get; set; }
         public string Food { get; set; }
         public string ?notes { get; set; }
         public DateTime date { get; set; } = DateTime.Now;
