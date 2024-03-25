@@ -2,20 +2,50 @@
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Buttons
 
+<style>
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 10px;
+    height: 900px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+</style>
+
 <PageTitle>Home</PageTitle>
 
-<center><h1>Gut Guardian</h1></center>
+<h1 style="text-align: center">Gut Guardian</h1>
 
-<SfGrid @ref="Grid" DataSource="@Orders" Height="500">
+<!--<SfGrid @ref="Grid" DataSource="@Orders" Height="500">
     <GridColumns>
         <GridColumn HeaderText="Food Intake" TextAlign="TextAlign.Left" Width="300"></GridColumn>
         <GridColumn HeaderText="Flag" TextAlign="TextAlign.Right" Width="100"></GridColumn>
     </GridColumns>
-</SfGrid>
+</SfGrid>-->
 
-<SfButton CssClass="e-info">FAQ</SfButton>
+<div class="row">
+    <div class="column" style="background-color:#aaa">
+        <h2 style="text-align:center">Food Intake</h2>
+    </div>
+    <div class="column" style="background-color:#bbb">
+        <h2 style="text-align:center">Food Diary</h2>
+    </div>
+    <div class="column" style="background-color:#ccc">
+        <h2 style="text-align:center">Flagged Foods</h2>
+    </div>
+</div>
+
+<iframe src="https://copilotstudio.microsoft.com/environments/Default-5011c7c6-0ab4-46ab-9ef4-fae74a921a7f/bots/crad4_capstoneProjectBot/webchat?__version__=2"
+frameborder="0" style="width: 1000px; height: 400px; margin: 0 auto; display: block;"></iframe>
+
+<!--<SfButton CssClass="e-info">FAQ</SfButton>
 <SfButton CssClass="e-info">Monash</SfButton>
-<SfButton CssClass="e-info">Docs</SfButton>
+<SfButton CssClass="e-info">Docs</SfButton>-->
 
 <!--<p role="status">Current count: @currentCount</p>
 
