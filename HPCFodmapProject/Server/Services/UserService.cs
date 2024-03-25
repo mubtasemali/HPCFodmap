@@ -1,7 +1,18 @@
-﻿using HPCFodmapProject.Server.Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using HPCFodmapProject.Shared;
-using Microsoft.AspNetCore.Mvc;
+using HPCFodmapProject.Server.Data;
+using HPCFodmapProject.Server;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+
+
+using HPCFodmapProject.Server.Models;
+using HPCFodmapProject.Server.Data.Migrations;
+using Syncfusion.Blazor.Diagram;
+using HPCFodmapProject.Server.Services;
+using Syncfusion.Blazor.Notifications;
 
 namespace HPCFodmapProject.Server.Services;
 
@@ -10,8 +21,19 @@ namespace HPCFodmapProject.Server.Services;
 public class UserService : IUserService
 {
     private readonly ApplicationDbContext _context;
-
+    private readonly UserManager<ApplicationUser> _userManager;
     
+
+    public UserService(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+    {
+        _context = context;
+        _userManager = userManager;
+        
+    }
+
+
+
+
     //takes in username and ingredientsID and checks if its not whitelsited or fodmap
     //mainly used to help foodintake controller method check if each food is flagged or not
     public async Task<bool> IsWhiteList(string username, int ingredientsId)

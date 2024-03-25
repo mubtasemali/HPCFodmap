@@ -25,7 +25,7 @@ public class FoodController : Controller
     { 
         _context = context;
         _userManager = userManager;
-        _service = new UserService();
+        _service = new UserService(context, userManager);
     }
     //updateWhiteList, it switches the value of the userIsAffected value given a username and ing - > !userIsAffected
     [HttpGet]
@@ -36,11 +36,14 @@ public class FoodController : Controller
         // var um = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
         try
         {
-            var result = (from u in _context.Users
+            var result = (from i in _context.Ingredients
+                          where i.IngredientsName == IngName
+                          select i.IngredientsID).FirstOrDefault();
+/*            var result = (from u in _context.Users
                           join w in _context.WhiteList on u.Id equals w.UserID
                           join i in _context.Ingredients on w.IngredientsID equals i.IngredientsID
                           where u.UserName == username && i.IngredientsName == IngName
-                          select i.IngredientsID).FirstOrDefault();
+                          select i.IngredientsID).FirstOrDefault();*/
 
             var userID = (from u in _context.Users
                           where u.UserName == username
@@ -49,8 +52,12 @@ public class FoodController : Controller
             var whitelistItem = (from w in _context.WhiteList
                                  where w.UserID == userID && w.IngredientsID == result
                                  select w).FirstOrDefault();
+
             if (whitelistItem != null)
             {
+
+
+
                 if (whitelistItem.userIsAffected == 0)
                 {
                     whitelistItem.userIsAffected = 1;
@@ -62,7 +69,7 @@ public class FoodController : Controller
             }
             else
             {
-                var whiteListEntry = new WhiteList { UserID = userID, IngredientsID = result, userIsAffected = 1 };
+                var whiteListEntry = new WhiteList { UserID = userID, IngredientsID = result, userIsAffected = 0 };
                 _context.WhiteList.Add(whiteListEntry);
             }
             
@@ -178,7 +185,7 @@ public class FoodController : Controller
                             join fi in _context.FoodIngredients on f.FoodID equals fi.FoodID
                             join ing in _context.Ingredients on fi.IngredientsID equals ing.IngredientsID
                             join w in _context.WhiteList on  ing.IngredientsID equals w.IngredientsID
-                            where w.userIsAffected == 1 && w.UserID == userId
+                            where (w.userIsAffected == 1 || ing.inFodMap ) && w.UserID == userId
                             select new FlaggedFoodDto
                             {
                                 foodName = f.foodName,
@@ -198,17 +205,28 @@ public class FoodController : Controller
     [Route("api/getWhitelist")]
     public async Task<List<string>> GetWhiteList(string username)
     {
+        /*     var userId = (from u in _context.Users
+                           where u.UserName == username
+                           select u.Id).FirstOrDefault();
+
+             var whiteListFoods = (from i in _context.Intake
+                                   join w in _context.WhiteList on i.FoodID equals w.IngredientsID
+                                   where w.userIsAffected == 0 && w.UserID == userId
+                                   select i.Food.foodName).Distinct().ToList();
+
+             return whiteListFoods;
+     */
+
         var userId = (from u in _context.Users
                       where u.UserName == username
                       select u.Id).FirstOrDefault();
 
-        var whiteListFoods = (from i in _context.Intake
-                              join w in _context.WhiteList on i.FoodID equals w.IngredientsID
-                              where w.userIsAffected == 0 && w.UserID == userId
-                              select i.Food.foodName).Distinct().ToList();
+        var whiteListedIngredients = (from w in _context.WhiteList
+                                      join i in _context.Ingredients on w.IngredientsID equals i.IngredientsID
+                                      where w.userIsAffected == 0 && w.UserID == userId
+                                      select i.IngredientsName).Distinct().ToList();
 
-        return whiteListFoods;
-
+        return whiteListedIngredients;
     }
 
 
