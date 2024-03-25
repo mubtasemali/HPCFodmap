@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Syncfusion.Blazor.Notifications;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +11,9 @@ namespace HPCFodmapProject.Shared
     public class IntakeDto
     {
         public int IntakeID { get; set; }
-        public string UserID { get; set; }
-        public int FoodID { get; set; }
-        public string notes { get; set; }
+        public string Food { get; set; }
+        public string ?notes { get; set; }
         public DateTime date { get; set; } = DateTime.Now;
+        public bool harmful { get; set; }
     }
 }
