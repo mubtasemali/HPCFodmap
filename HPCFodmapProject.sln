@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HPCFodmapProject.Server", "HPCFodmapProject\Server\HPCFodmapProject.Server.csproj", "{604802F1-5065-498D-82BF-C9713803ADB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HPCFodmapProject.Server", "HPCFodmapProject\Server\HPCFodmapProject.Server.csproj", "{604802F1-5065-498D-82BF-C9713803ADB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HPCFodmapProject.Client", "HPCFodmapProject\Client\HPCFodmapProject.Client.csproj", "{C185B733-FDAE-4501-A96B-014B0EE3636B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HPCFodmapProject.Client", "HPCFodmapProject\Client\HPCFodmapProject.Client.csproj", "{C185B733-FDAE-4501-A96B-014B0EE3636B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HPCFodmapProject.Shared", "HPCFodmapProject\Shared\HPCFodmapProject.Shared.csproj", "{45653891-9F75-4745-816E-96DD6432EE35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HPCFodmapProject.Shared", "HPCFodmapProject\Shared\HPCFodmapProject.Shared.csproj", "{45653891-9F75-4745-816E-96DD6432EE35}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
