@@ -110,8 +110,11 @@ public class FoodController : Controller
     //returns a list of Ingredients information in the form of a IngredientDTO for a given food
     [HttpGet]
     [Route("api/getIngredients")]
-    public async Task<List<IngredientsDto>> GetIngredients (string foodName)
+    public async Task<List<IngredientsDto>> GetIngredients (string foodName, string username)
     {
+        var userID = (from u in _context.Users
+                      where u.UserName == username
+                      select u.Id).FirstOrDefault();
 
         var foodId = (from f in _context.Food
                       where f.foodName == foodName
@@ -122,9 +125,9 @@ public class FoodController : Controller
                            where fi.FoodID == foodId
                            select new IngredientsDto
                            {
+
                                IngredientsName = i.IngredientsName,
-                               severity = i.severity,
-                               inFodMap = i.inFodMap
+                               harmful = !_service.IsWhiteList(username, i.IngredientsID) && i.inFodMap
                            }).ToList();
 
         return ingredients;

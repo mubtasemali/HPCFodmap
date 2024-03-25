@@ -11,11 +11,10 @@ public class UserService : IUserService
 {
     private readonly ApplicationDbContext _context;
 
-    [HttpGet]
-    [Route("api/isWhitelist")]
+    
     //takes in username and ingredientsID and checks if its not whitelsited or fodmap
     //mainly used to help foodintake controller method check if each food is flagged or not
-    public async Task<bool> IsWhiteList(string username, int ingredientsId)
+    public bool IsWhiteList(string username, int ingredientsId)
     {
         var userId = (from u in _context.Users
                       where u.UserName == username
