@@ -14,7 +14,7 @@ namespace HPCFodmapProject.Shared
            
             public string foodName { get; set; }
             //last notes given in foodintake for given user/food
-            public string issues { get; set; }
+            public string? issues { get; set; }
             public DateTime lastEaten { get; set; }
         }
     
