@@ -127,7 +127,7 @@ public class FoodController : Controller
                            {
 
                                IngredientsName = i.IngredientsName,
-                               harmful = !_service.IsWhiteList(username, i.IngredientsID) && i.inFodMap
+                               harmful = !_service.IsWhiteList(username, i.IngredientsID).Result && i.inFodMap
                            }).ToList();
 
         return ingredients;
@@ -152,7 +152,7 @@ public class FoodController : Controller
                        select new IntakeDto
                        {
                            
-                           harmful = _service.IsFlaggedFood(username, f.FoodID),
+                           harmful = _service.IsFlaggedFood(username, f.FoodID).Result,
                            Food = f.foodName,
                            notes = i.notes,
                            date = i.date,
