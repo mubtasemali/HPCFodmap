@@ -1,0 +1,24 @@
+﻿@page "/calender"
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Calendars
+<h3>Calender</h3>
+
+
+<SfCalendar TValue="DateTime">
+    <CalendarEvents TValue="DateTime?" OnRenderDayCell="onRenderDayCellHandler"></CalendarEvents>
+</SfCalendar>
+
+@code {
+
+    public void onRenderDayCellHandler(RenderDayCellEventArgs args)
+    {
+        
+    }
+
+
+}
+
+<style>
+    .e-schedule.e-vertical-view.e-header-cells.e-current-day {
+        color: #dc3545;
+        </style>
