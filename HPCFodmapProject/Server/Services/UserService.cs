@@ -68,5 +68,27 @@ public class UserService : IUserService
         return whiteListItems.Any();
     }
 
+    public async Task<bool> IsFlaggedFood(string username, string food)
+    {
+
+        var foodId = (from f in _context.Food
+                      where f.foodName == food
+                      select f.FoodID).FirstOrDefault();
+        var userId = (from u in _context.Users
+                      where u.UserName == username
+                      select u.Id).FirstOrDefault();
+
+        var ingredients = (from fi in _context.FoodIngredients
+                           join i in _context.Ingredients on fi.IngredientsID equals i.IngredientsID
+                           where fi.FoodID == foodId
+                           select i.IngredientsID).ToList();
+
+        var whiteListItems = (from w in _context.WhiteList
+                              where w.UserID == userId && ingredients.Contains(w.IngredientsID) && w.userIsAffected == 1
+                              select w).ToList();
+
+        return whiteListItems.Any();
+    }
+
 
 }

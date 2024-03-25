@@ -180,18 +180,23 @@ public class FoodController : Controller
                       where u.UserName == username
                       select u.Id).FirstOrDefault();
 
-        var flaggedFoods = (from i in _context.Intake
-                            join f in _context.Food on i.FoodID equals f.FoodID
-                            join fi in _context.FoodIngredients on f.FoodID equals fi.FoodID
-                            join ing in _context.Ingredients on fi.IngredientsID equals ing.IngredientsID
-                            join w in _context.WhiteList on  ing.IngredientsID equals w.IngredientsID
-                            where (w.userIsAffected == 1 || ing.inFodMap ) && w.UserID == userId
-                            select new FlaggedFoodDto
-                            {
-                                foodName = f.foodName,
-                                issues = i.notes,
-                                lastEaten = i.date
-                            }).ToList();
+        var IntakeFoods = GetFoodIntake(username).Result;
+        var flaggedFoods = new List<FlaggedFoodDto>();
+        foreach (IntakeDto intake in IntakeFoods)
+        {
+            if(_service.IsFlaggedFood(username, intake.Food).Result)
+            {
+                flaggedFoods.Add(new FlaggedFoodDto
+                {
+                    foodName = intake.Food,
+                    issues = intake.notes,
+                    lastEaten = intake.date
+
+
+                });
+            }
+
+        }
 
         return flaggedFoods;
 
