@@ -14,7 +14,7 @@ public class UserService : IUserService
     
     //takes in username and ingredientsID and checks if its not whitelsited or fodmap
     //mainly used to help foodintake controller method check if each food is flagged or not
-    public bool IsWhiteList(string username, int ingredientsId)
+    public async Task<bool> IsWhiteList(string username, int ingredientsId)
     {
         var userId = (from u in _context.Users
                       where u.UserName == username
@@ -28,7 +28,7 @@ public class UserService : IUserService
     }
     //Enter a foodId and username , may change implementation to replace foodID with name instead
     //The method checks wether a given food is a fodmap and checks if its on the whitelist
-    public bool IsFlaggedFood(string username, int foodId)
+    public async Task<bool> IsFlaggedFood(string username, int foodId)
     {
         var userId = (from u in _context.Users
                       where u.UserName == username
