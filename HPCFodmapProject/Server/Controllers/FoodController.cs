@@ -129,7 +129,7 @@ public class FoodController : Controller
 
         return ingredients;
     }
- 
+ //add harmful function for ingredients
 
 
 
@@ -150,7 +150,6 @@ public class FoodController : Controller
                        {
                            
                            harmful = _service.IsFlaggedFood(username, f.FoodID),
-                           IntakeID = i.IntakeID,
                            Food = f.foodName,
                            notes = i.notes,
                            date = i.date,
@@ -171,8 +170,23 @@ public class FoodController : Controller
                       where u.UserName == username
                       select u.Id).FirstOrDefault();
 
+        var flaggedFoods = (from i in _context.Intake
+                            join f in _context.Food on i.FoodID equals f.FoodID
+                            join fi in _context.FoodIngredients on f.FoodID equals fi.FoodID
+                            join ing in _context.Ingredients on fi.IngredientsID equals ing.IngredientsID
+                            join w in _context.WhiteList on  ing.IngredientsID equals w.IngredientsID
+                            where w.userIsAffected == 1 && w.UserID == userId
+                            select new FlaggedFoodDto
+                            {
+                                foodName = f.foodName,
+                                issues = i.notes,
+                                lastEaten = i.date
+                            }).ToList();
 
-        //implement here 
+        return flaggedFoods;
+
+
+
     }
 
     
@@ -185,11 +199,12 @@ public class FoodController : Controller
                       where u.UserName == username
                       select u.Id).FirstOrDefault();
 
-        //implement here
-        var list = (from i in _context.Intake
-                    join w in _context.WhiteList on i.FoodID equals w.FoodId
+        var whiteListFoods = (from i in _context.Intake
+                              join w in _context.WhiteList on i.FoodID equals w.IngredientsID
+                              where w.userIsAffected == 0 && w.UserID == userId
+                              select i.Food.foodName).Distinct().ToList();
 
-                    )
+        return whiteListFoods;
 
     }
 
