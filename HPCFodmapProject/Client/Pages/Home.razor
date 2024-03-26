@@ -24,25 +24,18 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col">
-            <SfGrid @ref="Grid" DataSource="Orders" AllowPaging="true" AllowSorting="true" Height="500">
+            <SfGrid @ref="Grid" DataSource="foodDiary" AllowPaging="true" AllowSorting="true" Height="500">
                 <GridColumns>
-                    <GridColumn HeaderText="Food Intake" TextAlign="TextAlign.Left" Width="300"></GridColumn>
-                    <GridColumn HeaderText="Flag" TextAlign="TextAlign.Right" Width="50">
+                    <GridColumn HeaderText="Food Intake" Field="Food" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+                    <!--<GridColumn HeaderText="Flag" TextAlign="TextAlign.Right" Width="50">
                         <Template>
                             @{
                                 <SfCheckBox TChecked="bool"></SfCheckBox> //refer to eric's admin.razor
                             }
                         </Template>
-                    </GridColumn>
-                    <GridColumn HeaderText="Food Diary" TextAlign="TextAlign.Left" Width="300"></GridColumn>
-                    <GridColumn HeaderText="Flagged Foods" TextAlign="TextAlign.Left" Width="300"></GridColumn>
-                    <GridColumn HeaderText="Whitelist" TextAlign="TextAlign.Right" Width="50">
-                        <Template>
-                            @{
-                                <SfCheckBox TChecked="bool"></SfCheckBox> //refer to eric's admin.razor
-                            }
-                        </Template>
-                    </GridColumn>
+                    </GridColumn>-->
+                    <GridColumn HeaderText="Notes" Field="notes" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+                    <GridColumn HeaderText="Date" Field="date" TextAlign="TextAlign.Left" Width="300"></GridColumn>
                 </GridColumns>
             </SfGrid>
         </div>
@@ -62,12 +55,12 @@
 </div>-->
 
 <!--TESTING CODE HERE FOR CONTROLLER-->
-@if(foodDiary?.Any() ?? false)
+<!--@if(foodDiary?.Any() ?? false)
 {
     @foreach(var entry in foodDiary)
     {
         <li>@entry.Food</li>
-    }
+    }-->
 }
 
 <iframe src="https://copilotstudio.microsoft.com/environments/Default-5011c7c6-0ab4-46ab-9ef4-fae74a921a7f/bots/crad4_capstoneProjectBot/webchat?__version__=2"
@@ -82,6 +75,6 @@ frameborder="0" style="width: 1000px; height: 400px; margin: 0 auto; display: bl
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>-->
 
 @code {
-    private SfGrid<int> Grid;
+    private SfGrid<HPCFodmapProject.Shared.IntakeDto> Grid;
     public List<int> Orders = new List<int> {1,2,3,4,5};
 }
