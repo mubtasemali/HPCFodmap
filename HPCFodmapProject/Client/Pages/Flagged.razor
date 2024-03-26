@@ -1,4 +1,4 @@
-﻿@page "/home"
+﻿@page "/flagged"
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Buttons
 
@@ -17,7 +17,7 @@
 }
 </style>-->
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Flagged Foods</PageTitle>
 
 <h1 style="text-align: center">Gut Guardian</h1>
 
@@ -26,7 +26,7 @@
         <div class="col">
             <SfGrid @ref="Grid" DataSource="foodDiary" AllowPaging="true" AllowSorting="true" Height="500">
                 <GridColumns>
-                    <GridColumn Field="Food" HeaderText="Food Intake" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+                    <GridColumn Field="Food" HeaderText="Flagged Ingredients" TextAlign="TextAlign.Left" Width="300"></GridColumn>
                     <GridColumn HeaderText="Flag" TextAlign="TextAlign.Right" Width="50">
                         <Template>
                             @{
@@ -34,8 +34,7 @@
                             }
                         </Template>
                     </GridColumn>
-                    <GridColumn Field="Food" HeaderText="Food Diary" TextAlign="TextAlign.Left" Width="300"></GridColumn>
-                    <GridColumn HeaderText="Flagged Foods" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+                    <GridColumn HeaderText="Whitelisted Ingredients" TextAlign="TextAlign.Left" Width="300"></GridColumn>
                     <GridColumn HeaderText="Whitelist" TextAlign="TextAlign.Right" Width="75">
                         <Template>
                             @{
@@ -47,6 +46,11 @@
             </SfGrid>
         </div>
     </div>
+</div>
+
+<div>
+    Flagged ingredients are ingredients that have an adverse effect on a user even though they are not considered a FODMAP.
+    Whitelisted ingredients are ingredients that are considered a FODMAP, but do NOT have an adverse effect on a user.
 </div>
 
 <!--<div class="row">
