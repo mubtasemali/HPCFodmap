@@ -21,14 +21,35 @@
 
 <h1 style="text-align: center">Gut Guardian</h1>
 
-<!--<SfGrid @ref="Grid" DataSource="@Orders" Height="500">
-    <GridColumns>
-        <GridColumn HeaderText="Food Intake" TextAlign="TextAlign.Left" Width="300"></GridColumn>
-        <GridColumn HeaderText="Flag" TextAlign="TextAlign.Right" Width="100"></GridColumn>
-    </GridColumns>
-</SfGrid>-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <SfGrid @ref="Grid" DataSource="Orders" AllowPaging="true" AllowSorting="true" Height="500">
+                <GridColumns>
+                    <GridColumn HeaderText="Food Intake" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+                    <GridColumn HeaderText="Flag" TextAlign="TextAlign.Right" Width="50">
+                        <Template>
+                            @{
+                                <SfCheckBox TChecked="bool"></SfCheckBox> //refer to eric's admin.razor
+                            }
+                        </Template>
+                    </GridColumn>
+                    <GridColumn HeaderText="Food Diary" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+                    <GridColumn HeaderText="Flagged Foods" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+                    <GridColumn HeaderText="Whitelist" TextAlign="TextAlign.Right" Width="50">
+                        <Template>
+                            @{
+                                <SfCheckBox TChecked="bool"></SfCheckBox> //refer to eric's admin.razor
+                            }
+                        </Template>
+                    </GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
+    </div>
+</div>
 
-<div class="row">
+<!--<div class="row">
     <div class="column" style="background-color:#aaa">
         <h2 style="text-align:center">Food Intake</h2>
     </div>
@@ -38,7 +59,7 @@
     <div class="column" style="background-color:#ccc">
         <h2 style="text-align:center">Flagged Foods</h2>
     </div>
-</div>
+</div>-->
 
 <iframe src="https://copilotstudio.microsoft.com/environments/Default-5011c7c6-0ab4-46ab-9ef4-fae74a921a7f/bots/crad4_capstoneProjectBot/webchat?__version__=2"
 frameborder="0" style="width: 1000px; height: 400px; margin: 0 auto; display: block;"></iframe>
