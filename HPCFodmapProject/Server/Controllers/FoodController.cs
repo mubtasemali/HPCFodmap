@@ -12,6 +12,8 @@ using Syncfusion.Blazor.Diagram;
 using HPCFodmapProject.Server.Services;
 using Syncfusion.Blazor.Notifications;
 using Syncfusion.Blazor.Kanban.Internal;
+//NEED THIS FOR DECODING string route in the addfood controller 
+using System.Web;
 
 namespace HPCFodmapProject.Server.Controllers;
 
@@ -20,11 +22,13 @@ public class FoodController : Controller
     private readonly ApplicationDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly UserService _service;
+    private readonly HttpUtility _httpUtility;
     public FoodController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
     {
         _context = context;
         _userManager = userManager;
         _service = new UserService(context, userManager);
+        _httpUtility = new HttpUtility();
     }
     //updateWhiteList, it switches the value of the userIsAffected value given a username and ing - > !userIsAffected
     [HttpGet]
@@ -88,10 +92,12 @@ public class FoodController : Controller
     [HttpGet]
     [Route("api/addfoodintake")]
 
-    public async Task<IActionResult> AddFoodIntake(string username, string foodName, string notes)
+    public async Task<bool> AddFoodIntake(string username, string foodName, string notes)
     //limit on notes in query string
     {
-
+        username = HttpUtility.UrlDecode(username);
+        foodName = HttpUtility.UrlDecode(foodName);
+        notes = HttpUtility.UrlDecode(notes);
         try
         {
             DateTime date = DateTime.Now;
@@ -117,11 +123,11 @@ public class FoodController : Controller
 
 
             _context.SaveChanges();
-            return Ok();
+            return true;
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return false;
         }
     }
     //returns a list of Ingredients information in the form of a IngredientDTO for a given food
