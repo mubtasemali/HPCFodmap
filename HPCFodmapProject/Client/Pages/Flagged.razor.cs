@@ -40,6 +40,15 @@ public partial class Flagged
         }
     }
 
+    public async Task ToggleWhitelist(Microsoft.AspNetCore.Components.ChangeEventArgs args, string ingToUpdate)
+    {
+        var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
+        if (UserAuth is not null && UserAuth.IsAuthenticated)
+        {
+            await Http.GetAsync($"api/updatewhitelist?username={UserAuth.Name}&IngName={ingToUpdate}");
+        }
+    }
+
     public async Task ToggleFlagged(Microsoft.AspNetCore.Components.ChangeEventArgs args, string ingToUpdate)
     {
         var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;

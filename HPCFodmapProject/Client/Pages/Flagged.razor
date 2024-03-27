@@ -27,18 +27,13 @@
             <SfGrid @ref="Grid" DataSource="whitelistIngredients" AllowPaging="true" AllowSorting="true" Height="500">
                 <GridColumns>
                     <GridColumn Field="ingredient" HeaderText="Whitelisted Ingredients" TextAlign="TextAlign.Left" Width="300"></GridColumn>
-                    <GridColumn HeaderText="Whitelist" TextAlign="TextAlign.Right" Width="75">
+                    <GridColumn HeaderText="Remove" TextAlign="TextAlign.Right" Width="75">
                         <Template>
                             @{
-                                //<SfCheckBox TChecked="bool"></SfCheckBox> //refer to eric's admin.razor
-                                /*SfButton whitelistButton;
-                                string Content = "Un-whitelist";
-
-                                <SfButton @ref="whitelistButton" IsToggle="true" IsPrimary="true" Content="@Content" @onclick="
-                                eventArgs => {
-
-                                }
-                                "></SfButton>*/
+                                var whitelistIng = context as HPCFodmapProject.Shared.WTDto;
+                                <SfCheckBox TChecked="bool" @onchange="eventArgs => {
+                                    ToggleWhitelist(eventArgs, whitelistIng.ingredient);
+                                }"></SfCheckBox> //refer to eric's admin.razor
                                 
                             }
                         </Template>
@@ -51,7 +46,7 @@
                 <GridColumns>
                     <GridColumn Field="ingredient" HeaderText="Flagged Ingredients" TextAlign="TextAlign.Left" Width="300"></GridColumn>
                     <GridColumn Field="issues" HeaderText="Notes" TextAlign="TextAlign.Left" Width="300"></GridColumn>
-                    <GridColumn HeaderText="Flagged" TextAlign="TextAlign.Right" Width="75">
+                    <GridColumn HeaderText="Remove" TextAlign="TextAlign.Right" Width="75">
                         <Template>
                             @{
                                 var flaggedIng = context as HPCFodmapProject.Shared.FlaggedDto;
