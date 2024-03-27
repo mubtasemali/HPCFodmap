@@ -16,6 +16,7 @@ namespace HPCFodmapProject.Server.Models
         public int IngredientsID { get; set; }
         //says binary in ERD not sure if this should be bool or not
         public int userIsAffected { get; set; }
+        public int userFlagged{ get; set; }
 
         [ForeignKey("UserID")]
         [InverseProperty("WhiteLists")]
