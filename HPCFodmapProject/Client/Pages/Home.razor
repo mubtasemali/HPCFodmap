@@ -46,11 +46,18 @@
 
 
 <div class='e-input-group'>
-    <SfButton CssClass="e-info">Add</SfButton>
-    <SfButton CssClass="e-info">Delete</SfButton>
-    <input class='e-input' Placeholder='Food' type='text'>
-   <input class='e-input' Placeholder='Food' type='text'>
+    
+     <SfButton  CssClass="e-info" @onclick="@(e=> getUserInputForEntry(@food, @notes))">Add</SfButton>
+    
+     
+  
+    <input class='e-input' @bind-value="@food" @bind-value:event="oninput" Placeholder='Food' type='text'>
+   <input class='e-input' @bind-value="@notes" @bind-value:event="oninput" Placeholder='Notes' type='text'>
+   <SfTextBox Placeholder='First Name'></SfTextBox>
 </div>
+
+
+
 
 <!--THE CHAT BOT-->
 <iframe src="https://copilotstudio.microsoft.com/environments/Default-5011c7c6-0ab4-46ab-9ef4-fae74a921a7f/bots/crad4_capstoneProjectBot/webchat?__version__=2"
@@ -66,5 +73,6 @@ frameborder="0" style="width: 1000px; height: 400px; margin: 0 auto; display: bl
 
 @code {
     private SfGrid<HPCFodmapProject.Shared.IntakeDto> Grid;
-    public List<int> Orders = new List<int> {1,2,3,4,5};
+
+
 }

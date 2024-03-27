@@ -2,6 +2,7 @@
 using System.Net.Http.Json;
 
 
+
 namespace HPCFodmapProject.Client.HttpRepository;
 
 public class UserFoodDiaryHttpRepository : IUserFoodDiaryHttpRepository
@@ -26,6 +27,21 @@ public class UserFoodDiaryHttpRepository : IUserFoodDiaryHttpRepository
 
 
         }
-       
-    
+
+    //should work?
+    public async Task<bool> AddFoodIntake(string userName, string foodName, string notes)
+    {
+        IntakeDto entry = new IntakeDto();
+        string passString = $"api/addfoodintake?username?foodname?notes={userName}/{foodName}/{notes}";
+       string newString = Uri.EscapeDataString(passString);
+        var res = await _httpClient.PostAsJsonAsync(passString, entry);
+        if (res.IsSuccessStatusCode)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+
 }
