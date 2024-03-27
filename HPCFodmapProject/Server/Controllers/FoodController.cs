@@ -411,13 +411,15 @@ public class FoodController : Controller
     [HttpGet]
     [Route("api/GetFodmap")]
 
-    public async Task<List<IngredientsDto>> GetFodmap()
+    public async Task<List<WTDto>> GetFodmap()
     {
         var fodmaps = (from i in _context.Ingredients
-                       where i.inFodMap
-                       select new IngredientsDto
+                       where i.inFodMap == true
+                       select new WTDto
                        { 
-                           IngredientsName = i.IngredientsName 
+                           ingredient = i.IngredientsName ,
+                           
+
                        }).ToList();
         return fodmaps;
     }
