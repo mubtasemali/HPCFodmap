@@ -14,5 +14,6 @@ namespace HPCFodmapProject.Shared
         public string ?notes { get; set; }
         public DateTime date { get; set; } = DateTime.Now;
         public bool harmful { get; set; }
+
     }
 }
