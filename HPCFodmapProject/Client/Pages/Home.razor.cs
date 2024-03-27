@@ -44,18 +44,29 @@ public partial class Home
        
     }
     //adding new method Method gets user input for food name and food notes from the front end after the button is clicked 
-   public void getUserInputForEntry(string foodI, string notesI)
+    //changed method from void so I can call ReloadGrid method
+   public async Task getUserInputForEntry(string foodI, string notesI)
     {
         //console writelines for testing
         //Console.WriteLine("Passed food sucessfully: " + foodI);
         //Console.WriteLine("Passed note sucessfully: " + notesI);
-     //calls the food result method which connexts to the controller api route so that we can pass in user
+        //calls the food result method which connexts to the controller api route so that we can pass in user
+        //await ReloadGrid();
         var foodResult = AddFoodIntake(userN, foodI, notesI);
+    if(foodResult != null)
+        {
+            //need to delay to show most recent change
+            await Task.Delay(5000);
+            await ReloadGrid();
+        }
+        
+
         Console.WriteLine("food result: " + foodResult);
     }
     // 
     public async Task<bool> AddFoodIntake(string userName, string foodName, string notes)
     {
+
         //making sure it is being passed into method testing
         //Console.WriteLine("Passed food sucessfully into second method: " + foodName);
         //Console.WriteLine("Passed note sucessfully into second method: " + notes);
@@ -71,8 +82,16 @@ public partial class Home
         }
         return false;
     }
-
-    //not sure if keeping this method
-
+//method for refreshing the page 
+    public async Task ReloadGrid()
+    {
+        var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
+        string uName = UserAuth.Name;
+        this.userN = uName;
+        if (UserAuth is not null && UserAuth.IsAuthenticated)
+        {
+            foodDiary = await UserFoodDiaryHttpRepository.GetIngredients(UserAuth.Name);
+        }
+    }
 }
     
