@@ -16,3 +16,9 @@ namespace HPCFodmapProject.Shared
         public int userIsAffected { get; set; }
     }
 }
+
+
+//fodmaps
+//flagged ingredients
+//addflag 
+//modify intake

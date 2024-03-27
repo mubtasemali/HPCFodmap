@@ -46,7 +46,7 @@ public class UserService : IUserService
                              where w.UserID == userId && w.IngredientsID == ingredientsId
                              select w).FirstOrDefault();
 
-        return whiteListItem != null && whiteListItem.userIsAffected == 0;
+        return (whiteListItem != null) && (whiteListItem.userIsAffected == 0) && (whiteListItem.userFlagged == 0);
     }
     //Enter a foodId and username , may change implementation to replace foodID with name instead
     //The method checks wether a given food is a fodmap and checks if its on the whitelist
@@ -64,8 +64,12 @@ public class UserService : IUserService
         var whiteListItems = (from w in _context.WhiteList
                               where w.UserID == userId && ingredients.Contains(w.IngredientsID) && w.userIsAffected == 1
                               select w).ToList();
+        var isFlaggedInWhiteList = (from w in _context.WhiteList
+                                    join i in _context.Ingredients on w.IngredientsID equals i.IngredientsID
+                                    where w.UserID == userId && ingredients.Contains(i.IngredientsID) && w.userFlagged == 1
+                                    select w).Any();
 
-        return whiteListItems.Any();
+        return whiteListItems.Any() || isFlaggedInWhiteList;
     }
 
     public async Task<bool> IsFlaggedFood(string username, string food)
@@ -87,7 +91,12 @@ public class UserService : IUserService
                               where w.UserID == userId && ingredients.Contains(w.IngredientsID) && w.userIsAffected == 1
                               select w).ToList();
 
-        return whiteListItems.Any();
+        var isFlaggedInWhiteList = (from w in _context.WhiteList
+                                    join i in _context.Ingredients on w.IngredientsID equals i.IngredientsID
+                                    where w.UserID == userId && ingredients.Contains(i.IngredientsID) && w.userFlagged == 1
+                                    select w).Any();
+
+        return whiteListItems.Any() || isFlaggedInWhiteList;
     }
 
 
