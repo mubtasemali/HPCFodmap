@@ -27,36 +27,16 @@ public partial class Home
         var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
         if (UserAuth is not null && UserAuth.IsAuthenticated)
         {
-
-            //IntakeDto intakeDto = await Http.GetFromJsonAsync<IntakeDto>("api/getUserFoodIntak?username=" + UserAuth.Name);
             string username = UserAuth.Name;
 
-            //says problem here 
-            foodDiary = await UserFoodDiaryHttpRepository.GetIngredients(username);
+            //says problem here (THIS DOES NOT WORK)
+            foodDiary = await UserFoodDiaryHttpRepository.GetIngredients(UserAuth.Name);
 
 
+            //COMMENTING OUT TO USE METHOD (THIS METHOD WORKS)
 
-            //COMMENTING OUT TO USE METHOD
+             foodDiary = await Http.GetFromJsonAsync<List<IntakeDto>>("api/getUserFoodIntake?username=" + UserAuth.Name);
 
-            // foodDiary = await Http.GetFromJsonAsync<List<IntakeDto>>("api/getUserFoodIntake?username=" + UserAuth.Name);
-
-
-
-
-
-
-
-
-
-
-
-            //var foodDiary = await HttpClient.GetAsync<List<IntakeDto>>("/api/cars");
-            //if (foodDiary?.Any() ?? false)
-            //{
-            //    foreach(var food in foodDiary)
-            //    {
-            //        IntakeDto intake = await Http.GetFromJsonAsync<IntakeDto>(food.ToString());
-            //    }
         }
     }
 }
