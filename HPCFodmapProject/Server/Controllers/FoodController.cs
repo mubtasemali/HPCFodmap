@@ -6,13 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-
-
 using HPCFodmapProject.Server.Models;
 using HPCFodmapProject.Server.Data.Migrations;
 using Syncfusion.Blazor.Diagram;
 using HPCFodmapProject.Server.Services;
 using Syncfusion.Blazor.Notifications;
+using Syncfusion.Blazor.Kanban.Internal;
 
 namespace HPCFodmapProject.Server.Controllers;
 
@@ -22,7 +21,7 @@ public class FoodController : Controller
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly UserService _service;
     public FoodController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
-    { 
+    {
         _context = context;
         _userManager = userManager;
         _service = new UserService(context, userManager);
@@ -39,11 +38,11 @@ public class FoodController : Controller
             var result = (from i in _context.Ingredients
                           where i.IngredientsName == IngName
                           select i.IngredientsID).FirstOrDefault();
-/*            var result = (from u in _context.Users
-                          join w in _context.WhiteList on u.Id equals w.UserID
-                          join i in _context.Ingredients on w.IngredientsID equals i.IngredientsID
-                          where u.UserName == username && i.IngredientsName == IngName
-                          select i.IngredientsID).FirstOrDefault();*/
+            /*            var result = (from u in _context.Users
+                                      join w in _context.WhiteList on u.Id equals w.UserID
+                                      join i in _context.Ingredients on w.IngredientsID equals i.IngredientsID
+                                      where u.UserName == username && i.IngredientsName == IngName
+                                      select i.IngredientsID).FirstOrDefault();*/
 
             var userID = (from u in _context.Users
                           where u.UserName == username
@@ -70,10 +69,10 @@ public class FoodController : Controller
             }
             else
             {
-                var whiteListEntry = new WhiteList { UserID = userID, IngredientsID = result, userIsAffected = 0 , userFlagged = 0};
+                var whiteListEntry = new WhiteList { UserID = userID, IngredientsID = result, userIsAffected = 0, userFlagged = 0 };
                 _context.WhiteList.Add(whiteListEntry);
             }
-            
+
             _context.SaveChanges();
             return Ok();
         }
@@ -90,7 +89,7 @@ public class FoodController : Controller
     [Route("api/addfoodintake")]
 
     public async Task<IActionResult> AddFoodIntake(string username, string foodName, string notes)
-        //limit on notes in query string
+    //limit on notes in query string
     {
 
         try
@@ -100,20 +99,20 @@ public class FoodController : Controller
                           where u.UserName == username
                           select u.Id).FirstOrDefault();
 
-
-            var foodID? = (from f in _context.Food
-                          where f.foodName == foodName//added like
-                          select f.FoodID).FirstOrDefault();
+            int? foodID;
+            foodID = (from f in _context.Food
+                      where f.foodName == foodName//added like
+                      select f.FoodID).FirstOrDefault();
 
             if (foodID == null)
             {
 
-                var foodID? = (from f in _context.Food
-                               where f.foodName.contains("foodName")//added like
-                               select f.FoodID).FirstOrDefault();
+                foodID = (from f in _context.Food
+                          where f.foodName.Contains("foodName")//added like
+                          select f.FoodID).FirstOrDefault();
             }
 
-            var intake = new Intake { UserID = userID, FoodID = foodID, notes = notes, date = date };
+            var intake = new Intake { UserID = userID, FoodID = (int)foodID, notes = notes, date = date };
             _context.Intake.Add(intake);
 
 
@@ -128,7 +127,7 @@ public class FoodController : Controller
     //returns a list of Ingredients information in the form of a IngredientDTO for a given food
     [HttpGet]
     [Route("api/getIngredients")]
-    public async Task<List<IngredientsDto>> GetIngredients (string foodName, string username)
+    public async Task<List<IngredientsDto>> GetIngredients(string foodName, string username)
     {
         var userID = (from u in _context.Users
                       where u.UserName == username
@@ -150,7 +149,7 @@ public class FoodController : Controller
 
         return ingredients;
     }
- //add harmful function for ingredients
+    //add harmful function for ingredients
 
 
 
@@ -158,7 +157,7 @@ public class FoodController : Controller
     //return List of IntakeDTO, the harmful attribute -> use this to check if food is harmful for specific user
     [HttpGet]
     [Route("api/getUserFoodIntake")]
-    public async  Task <List<IntakeDto>> GetFoodIntake(string username)
+    public async Task<List<IntakeDto>> GetFoodIntake(string username)
     {
         var userId = (from u in _context.Users
                       where u.UserName == username
@@ -169,7 +168,7 @@ public class FoodController : Controller
                        where i.UserID == userId
                        select new IntakeDto
                        {
-                           
+
                            harmful = _service.IsFlaggedFood(username, f.FoodID).Result,
                            Food = f.foodName,
                            notes = i.notes,
@@ -182,17 +181,17 @@ public class FoodController : Controller
 
         return intakes;
     }
-    [HttpGet]
+    [HttpDelete]
     [Route("api/deleteIntake")]
-    public async Task<IActionResult> DeleteFoodIntake(string username,IntakeDto intake)
+    public async Task<IActionResult> DeleteFoodIntake(string username, IntakeDto intake)
     //limit on notes in query string
     {
 
-        
+
         try
         {
             var foodName = intake.Food;
-            
+
             var userID = (from u in _context.Users
                           where u.UserName == username
                           select u.Id).FirstOrDefault();
@@ -200,8 +199,8 @@ public class FoodController : Controller
                           where f.foodName == foodName
                           select f.FoodID).FirstOrDefault();
 
-            var intake = new Intake { UserID = userID, FoodID = foodID, notes = intake.notes, date = intake.date };
-            _context.Intake.Remove(intake);
+            var intakeTemp = new Intake { UserID = userID, FoodID = foodID, notes = intake.notes, date = intake.date };
+            _context.Intake.Remove(intakeTemp);
 
 
             _context.SaveChanges();
@@ -214,54 +213,66 @@ public class FoodController : Controller
     }
 
     [HttpGet]
-    [Route("api/getFlaggedFoods")]
-    public async Task<List<FlaggedFoodDto>> GetFlaggedFoods(string username)
+    [Route("api/getFlaggedIntake")]
+    public async Task<List<FlaggedDto>> GetFlaggedIntake(string username)
     {
         var userId = (from u in _context.Users
                       where u.UserName == username
                       select u.Id).FirstOrDefault();
 
         var IntakeFoods = GetFoodIntake(username).Result;
-        var flaggedFoods = new List<FlaggedFoodDto>();
-        foreach (IntakeDto intake in IntakeFoods)
+        var flaggedIntake = new List<FlaggedDto>();
+        //get all flagged ingredients from IntakeFoods
+        foreach (var food in IntakeFoods)
         {
-            if(_service.IsFlaggedFood(username, intake.Food).Result)
+            if (food.harmful)
             {
-                flaggedFoods.Add(new FlaggedFoodDto
+                var flaggedFood = new FlaggedDto
                 {
-                    foodName = intake.Food,
-                    issues = intake.notes,
-                    lastEaten = intake.date
-
-
-                });
+                    ingredient = food.Food,
+                    issues = food.notes,
+                    lastEaten = food.date
+                };
+                flaggedIntake.Add(flaggedFood);
             }
-
+        }
+        var flaggedIngredients = new List<FlaggedDto>();
+        foreach (var flagged in flaggedIntake)
+        {
+            //get all ingredient of flagged food
+            var ingredients = GetIngredients(flagged.ingredient, username).Result;
+            foreach (var ingredient in ingredients)
+            {
+                if (ingredient.harmful)
+                {
+                    var flaggedIngredient = new FlaggedDto
+                    {
+                        ingredient = ingredient.IngredientsName,
+                        issues = flagged.issues,
+                        lastEaten = flagged.lastEaten
+                    };
+                    flaggedIngredients.Add(flaggedIngredient);
+                }
+            }
+          
         }
 
-        return flaggedFoods;
 
 
+       
 
+        
+
+        return flaggedIngredients;
     }
 
-    
+
     //returns list of whitelist items , list of the names of the food
     [HttpGet]
     [Route("api/getWhitelist")]
     public async Task<List<WTDto>> GetWhiteList(string username)
     {
-        /*     var userId = (from u in _context.Users
-                           where u.UserName == username
-                           select u.Id).FirstOrDefault();
 
-             var whiteListFoods = (from i in _context.Intake
-                                   join w in _context.WhiteList on i.FoodID equals w.IngredientsID
-                                   where w.userIsAffected == 0 && w.UserID == userId
-                                   select i.Food.foodName).Distinct().ToList();
-
-             return whiteListFoods;
-     */
 
         var userId = (from u in _context.Users
                       where u.UserName == username
@@ -270,7 +281,8 @@ public class FoodController : Controller
         var whiteListedIngredients = (from w in _context.WhiteList
                                       join i in _context.Ingredients on w.IngredientsID equals i.IngredientsID
                                       where w.userIsAffected == 0 && w.UserID == userId && w.userFlagged == 0
-                                      select new WTDto{
+                                      select new WTDto
+                                      {
                                           ingredient = i.IngredientsName
                                       }
                                       ).Distinct().ToList();
@@ -278,18 +290,82 @@ public class FoodController : Controller
         return whiteListedIngredients;
     }
 
+
     [HttpGet]
-    [Route("api/addFlaggedFood")]
+    [Route("api/updateIntake")]
+    public async Task<IActionResult> UpdateIntake(string username, IntakeDto intake)
+    {
+
+        var foodName = intake.Food;
+
+
+        var foodID = (from f in _context.Food
+                      where f.foodName == foodName
+                      select f.FoodID).FirstOrDefault();
+
+
+        var userID = (from u in _context.Users
+                      where u.UserName == username
+                      select u.Id).FirstOrDefault();
+
+        var existingIntake = _context.Intake.SingleOrDefault(i => i.FoodID == foodID && i.UserID == userID && i.date == intake.date);
+
+        if (existingIntake != null)
+        {
+            existingIntake.notes = intake.notes;
+            _context.SaveChanges();
+        }
+
+        return Ok();
+    }
+
+    //modify this to return a list of ingredients that are flagged
+    [HttpGet]
+    [Route("api/GetUserFlagged")]
+    public async Task<List<FlaggedDto>> GetUserFlagged(string username)
+    {
+        var userID = (from u in _context.Users
+                      where u.UserName == username
+                      select u.Id).FirstOrDefault();
+
+        var flaggedIngredients = (from w in _context.WhiteList
+                                  join i in _context.Ingredients on w.IngredientsID equals i.IngredientsID
+                                  where w.userFlagged == 1 && w.UserID == userID
+                                  select new FlaggedDto
+                                  {
+                                      ingredient = i.IngredientsName,
+                                      //issues is the last notes given for the food
+                                      issues = (from f in _context.Food
+                                                join fi in _context.FoodIngredients on f.FoodID equals fi.FoodID
+                                                join ii in _context.Ingredients on fi.IngredientsID equals ii.IngredientsID
+                                                join it in _context.Intake on ii.IngredientsID equals it.FoodID
+                                                where it.UserID == userID
+                                                select it.notes).FirstOrDefault(),
+                                      lastEaten = (from f in _context.Food
+                                                  join fi in _context.FoodIngredients on f.FoodID equals fi.FoodID
+                                                  join ii in _context.Ingredients on fi.IngredientsID equals ii.IngredientsID
+                                                  join it in _context.Intake on ii.IngredientsID equals it.FoodID
+                                                  where it.UserID == userID
+                                                  select it.date).FirstOrDefault()
+
+                                  }).Distinct().ToList();
+
+        return flaggedIngredients;
+    }
+
+
+    [HttpGet]
+    [Route("api/updateFlaggedFood")]
     public async Task<IActionResult> UpdateFlagged(string username, string IngName)
     {
 
-        
+
         try
         {
             var result = (from i in _context.Ingredients
                           where i.IngredientsName == IngName
                           select i.IngredientsID).FirstOrDefault();
-        
+
 
             var userID = (from u in _context.Users
                           where u.UserName == username
@@ -310,7 +386,7 @@ public class FoodController : Controller
                 }
                 else
                 {
-                    
+
                     whitelistItem.userFlagged = 0;
                 }
             }
@@ -330,78 +406,52 @@ public class FoodController : Controller
         }
 
     }
- 
-    [HttpGet]
-    [Route("api/updateIntake")]
-    public async Task<IActionResult>(string username, IntakeDto intake) {
-
-
-
-        var foodName = intake.Food;
-
-
-        var foodID = (from f in _context.Food
-                      where f.foodName == foodName
-                      select f.FoodID).FirstOrDefault();
-
-
-        var userID = (from u in _context.Users
-                      where u.UserName == username
-                      select u.Id).FirstOrDefault();
-        
-        var existingIntake = _context.Intakes.SingleOrDefault(i => i.FoodID == foodId && i.UserID == userId && i.Date == intake.date);
-
-        if (existingIntake != null)
-        {
-            existingIntake.Notes = intake.notes;
-            _context.SaveChanges();
-        }
-
-    }
-
-    [HttpGet]
-    [Route("api/GetFlagged")]
-    public async Task<list<FlaggedDTO>> GetFlagged(string username){
-            var userID = (from u in _context.Users
-                      where u.UserName == username
-                      select u.Id).FirstOrDefault();
-
-        var Flagged = (from w in WhiteList
-                       where w.userID = userID and w.userIsFlagged
-                       select new FlaggedDto
-                       {
-                           
-
-                       })
-
-
-
-
-
-}
 
 
     [HttpGet]
     [Route("api/GetFodmap")]
 
-    public async Task<List<IngredientsDto>>(){
+    public async Task<List<IngredientsDto>> GetFodmap()
+    {
         var fodmaps = (from i in _context.Ingredients
                        where i.inFodMap
-                       select new FodmapDto
-                       {
-                           ingredient =  i.IngredientsName;
+                       select new IngredientsDto
+                       { 
+                           IngredientsName = i.IngredientsName 
+                       }).ToList();
+        return fodmaps;
+    }
+    [HttpGet]
+    [Route("api/AddFodmap")]
+    public async Task<IActionResult> AddFodmap(string ingredient)
+    {
+        try
+        {
+            var fodmap = new Ingredients { IngredientsName = ingredient, inFodMap = true };
+            _context.Ingredients.Add(fodmap);
+            _context.SaveChanges();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 
-                       
-                       }
-
-
-}  
-
-
+    [HttpDelete]
+    [Route("api/DeleteFodmap")]
+    public async Task<IActionResult> DeleteFodmap(string ingredient)
+    {
+        try
+        {
+            var fodmap = _context.Ingredients.SingleOrDefault(i => i.IngredientsName == ingredient);
+            _context.Ingredients.Remove(fodmap);
+            _context.SaveChanges();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 }
-
-
-
-
-
-

@@ -9,10 +9,10 @@ namespace HPCFodmapProject.Shared
 
    
     
-      public class FlaggedFoodDto
+      public class FlaggedDto
         {
            
-            public string foodName { get; set; }
+            public string ingredient { get; set; }
             //last notes given in foodintake for given user/food
             public string? issues { get; set; }
             public DateTime lastEaten { get; set; }
