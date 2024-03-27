@@ -6,15 +6,18 @@ namespace HPCFodmapProject.Client.HttpRepository;
 
 public class UserFoodDiaryHttpRepository : IUserFoodDiaryHttpRepository
 {
-  
+ 
 
-        HttpClient Http { get; set; }
-        //private readonly HttpClient _httpClient;
-        public async Task<List<IntakeDto>> GetIngredients(string userName)
+    HttpClient _httpClient { get; set; }
+    public UserFoodDiaryHttpRepository(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+    }
+    //private readonly HttpClient _httpClient;
+    public async Task<List<IntakeDto>> GetIngredients(string userName)
         {
             List<IntakeDto>? foodDiary = new List<IntakeDto>();
-        //says problem with below 
-        foodDiary = await Http.GetFromJsonAsync<List<IntakeDto>>("api/getUserFoodIntake?username=" + userName);
+        foodDiary = await _httpClient.GetFromJsonAsync<List<IntakeDto>>($"api/getUserFoodIntake?username={userName}");
         //if (foodDiary == null)
         //{
 

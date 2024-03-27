@@ -14,7 +14,6 @@ public partial class Home
 {
     [Inject]
     AuthenticationStateProvider AuthenticationStateProvider { get; set; }
-    //new code 
     [Inject]
     UserFoodDiaryHttpRepository UserFoodDiaryHttpRepository  { get; set; }
     [Inject]
@@ -27,15 +26,9 @@ public partial class Home
         var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
         if (UserAuth is not null && UserAuth.IsAuthenticated)
         {
-            string username = UserAuth.Name;
-
-            //says problem here (THIS DOES NOT WORK)
             foodDiary = await UserFoodDiaryHttpRepository.GetIngredients(UserAuth.Name);
-
-
-            //COMMENTING OUT TO USE METHOD (THIS METHOD WORKS)
-
-             foodDiary = await Http.GetFromJsonAsync<List<IntakeDto>>("api/getUserFoodIntake?username=" + UserAuth.Name);
+            //COMMENTING OUT TO USE METHOD (THIS  WORKS)
+             //foodDiary = await Http.GetFromJsonAsync<List<IntakeDto>>("api/getUserFoodIntake?username=" + UserAuth.Name);
 
         }
     }
