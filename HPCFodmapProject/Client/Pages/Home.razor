@@ -48,7 +48,7 @@
 <div class='e-input-group'>
     
      <SfButton  CssClass="e-info" @onclick="@(e=> getUserInputForEntry(@food, @notes))">Add</SfButton>
-    
+     <SfButton   color='blue' @onclick="@(e=> getUserInputForEntry(@food, @notes))">Add</SfButton>
      
   
     <input class='e-input' @bind-value="@food" @bind-value:event="oninput" Placeholder='Food' type='text'>
