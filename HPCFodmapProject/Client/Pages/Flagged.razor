@@ -17,7 +17,7 @@
 }
 </style>-->
 
-<PageTitle>Flagged Foods</PageTitle>
+<PageTitle>Flagged & Whitelisted Foods</PageTitle>
 
 <h1 style="text-align: center">Gut Guardian</h1>
 
@@ -26,16 +26,23 @@
         <div class="col">
             <SfGrid @ref="Grid" DataSource="whitelistIngredients" AllowPaging="true" AllowSorting="true" Height="500">
                 <GridColumns>
-                    <GridColumn HeaderText="Flagged Ingredients" TextAlign="TextAlign.Left" Width="300"></GridColumn>
-                    <GridColumn HeaderText="Flag" TextAlign="TextAlign.Right" Width="50">
+                    <GridColumn Field="ingredient" HeaderText="Whitelisted Ingredients" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+                    <GridColumn HeaderText="Whitelist" TextAlign="TextAlign.Right" Width="75">
                         <Template>
                             @{
                                 <SfCheckBox TChecked="bool"></SfCheckBox> //refer to eric's admin.razor
                             }
                         </Template>
                     </GridColumn>
-                    <GridColumn Field="" HeaderText="Whitelisted Ingredients" TextAlign="TextAlign.Left" Width="300"></GridColumn>
-                    <GridColumn HeaderText="Whitelist" TextAlign="TextAlign.Right" Width="75">
+                </GridColumns>
+            </SfGrid>
+        </div>
+        <div class="col">
+            <SfGrid @ref="Grid2" DataSource="flaggedIngredients" AllowPaging="true" AllowSorting="true" Height="500">
+                <GridColumns>
+                    <GridColumn Field="ingredient" HeaderText="Flagged Ingredients" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+                    <GridColumn Field="issues" HeaderText="Notes" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+                    <GridColumn HeaderText="Flagged" TextAlign="TextAlign.Right" Width="75">
                         <Template>
                             @{
                                 <SfCheckBox TChecked="bool"></SfCheckBox> //refer to eric's admin.razor
@@ -59,7 +66,7 @@
 {
     @foreach(var entry in whitelistIngredients)
     {
-        <li>@entry</li>
+        <li>@entry.ingredient</li>
     }
 }
 
@@ -67,5 +74,6 @@
 frameborder="0" style="width: 1000px; height: 400px; margin: 0 auto; display: block;"></iframe>
 
 @code {
-    private SfGrid<string> Grid;
+    private SfGrid<HPCFodmapProject.Shared.WTDto> Grid;
+    private SfGrid<HPCFodmapProject.Shared.FlaggedDto> Grid2;
 }

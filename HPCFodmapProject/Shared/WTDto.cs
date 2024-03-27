@@ -9,6 +9,6 @@ namespace HPCFodmapProject.Shared
 
     public class WTDto
     {
-        public string ingredient;
+        public string ingredient { get; set; }
     }
 }
