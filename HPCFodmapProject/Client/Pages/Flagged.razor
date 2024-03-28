@@ -2,70 +2,59 @@
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Buttons
 
-<!--<style>
-.column {
-    float: left;
-    width: 33.33%;
-    padding: 10px;
-    height: 900px;
-}
-
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-</style>-->
-
-<PageTitle>Flagged Foods</PageTitle>
+<PageTitle>Whitelisted & Flagged Foods</PageTitle>
 
 <h1 style="text-align: center">Gut Guardian</h1>
 
 <div class="container-fluid">
     <div class="row">
         <div class="col">
+            
             <SfGrid @ref="Grid" DataSource="whitelistIngredients" AllowPaging="true" AllowSorting="true" Height="500">
                 <GridColumns>
-                    <GridColumn HeaderText="Flagged Ingredients" TextAlign="TextAlign.Left" Width="300"></GridColumn>
-                    <GridColumn HeaderText="Flag" TextAlign="TextAlign.Right" Width="50">
+                    <GridColumn Field="ingredient" HeaderText="Whitelisted Ingredients" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+                    <GridColumn HeaderText="Remove" TextAlign="TextAlign.Right" Width="75">
                         <Template>
                             @{
-                                <SfCheckBox TChecked="bool"></SfCheckBox> //refer to eric's admin.razor
-                            }
-                        </Template>
-                    </GridColumn>
-                    <GridColumn Field="" HeaderText="Whitelisted Ingredients" TextAlign="TextAlign.Left" Width="300"></GridColumn>
-                    <GridColumn HeaderText="Whitelist" TextAlign="TextAlign.Right" Width="75">
-                        <Template>
-                            @{
-                                <SfCheckBox TChecked="bool"></SfCheckBox> //refer to eric's admin.razor
+                                var whitelistIng = context as HPCFodmapProject.Shared.WTDto;
+                                <SfCheckBox TChecked="bool" @onchange="eventArgs => {
+                                    ToggleWhitelist(eventArgs, whitelistIng.ingredient);
+                                }"></SfCheckBox>
+                                
                             }
                         </Template>
                     </GridColumn>
                 </GridColumns>
             </SfGrid>
+            <p style="text-align:center">Whitelisted ingredients are considered a FODMAP, but do NOT have an adverse effect on you.</p>
+        </div>
+        <div class="col">
+            
+            <SfGrid @ref="Grid2" DataSource="flaggedIngredients" AllowPaging="true" AllowSorting="true" Height="500">
+                <GridColumns>
+                    <GridColumn Field="ingredient" HeaderText="Flagged Ingredients" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+                    <GridColumn Field="issues" HeaderText="Notes" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+                    <GridColumn HeaderText="Remove" TextAlign="TextAlign.Right" Width="75">
+                        <Template>
+                            @{
+                                var flaggedIng = context as HPCFodmapProject.Shared.FlaggedDto;
+                                <SfCheckBox TChecked="bool" @onchange="eventArgs => {
+                                    ToggleFlagged(eventArgs, flaggedIng.ingredient);
+                                }"></SfCheckBox>
+                            }
+                        </Template>
+                    </GridColumn>
+                </GridColumns>
+            </SfGrid>
+            <p style="text-align:center">Flagged ingredients have an adverse effect on you even though they are not considered a FODMAP.</p>
         </div>
     </div>
 </div>
-
-<div>
-    Flagged ingredients are ingredients that have an adverse effect on a user even though they are not considered a FODMAP.
-    Whitelisted ingredients are ingredients that are considered a FODMAP, but do NOT have an adverse effect on a user.
-</div>
-
-
-<!--TESTING CODE HERE FOR CONTROLLER-->
-@if(whitelistIngredients?.Any() ?? false)
-{
-    @foreach(var entry in whitelistIngredients)
-    {
-        <li>@entry</li>
-    }
-}
 
 <iframe src="https://copilotstudio.microsoft.com/environments/Default-5011c7c6-0ab4-46ab-9ef4-fae74a921a7f/bots/crad4_capstoneProjectBot/webchat?__version__=2"
 frameborder="0" style="width: 1000px; height: 400px; margin: 0 auto; display: block;"></iframe>
 
 @code {
-    private SfGrid<string> Grid;
+    private SfGrid<HPCFodmapProject.Shared.WTDto> Grid;
+    private SfGrid<HPCFodmapProject.Shared.FlaggedDto> Grid2;
 }
