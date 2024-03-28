@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Syncfusion.Blazor;
+using HPCFodmapProject.Client.HttpRepository;
 
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzE3MDUzNUAzMjM1MmUzMDJlMzBZcTBpOWxkWmM3aGg5RkRiMDIySlhwY2g4cDZ4Nm9oWkNSOTlNS3R1U25rPQ==");
 
@@ -16,6 +17,7 @@ builder.Services.AddHttpClient("HPCFodmapProject.ServerAPI", client => client.Ba
 // Supply HttpClient instances that include access tokens when making requests to the server project
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("HPCFodmapProject.ServerAPI"));
 
+builder.Services.AddScoped<UserFoodDiaryHttpRepository>();
 builder.Services.AddApiAuthorization();
 builder.Services.AddSyncfusionBlazor();
 

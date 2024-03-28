@@ -1,27 +1,78 @@
 ﻿@page "/home"
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Buttons
+@using HPCFodmapProject.Client.HttpRepository;
+
+<!--<style>
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 10px;
+    height: 900px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+</style>-->
 
 <PageTitle>Home</PageTitle>
 
-<center><h1>Gut Guardian</h1></center>
+<h1 style="text-align: center">Gut Guardian</h1>
 
-<SfGrid @ref="Grid" DataSource="@Orders" Height="500">
-    <GridColumns>
-        <GridColumn HeaderText="Food Intake" TextAlign="TextAlign.Left" Width="300"></GridColumn>
-        <GridColumn HeaderText="Flag" TextAlign="TextAlign.Right" Width="100"></GridColumn>
-    </GridColumns>
-</SfGrid>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <SfGrid @ref="Grid" DataSource="foodDiary" AllowPaging="true" AllowSorting="true" Height="500">
+                <GridColumns>
+                    <GridColumn HeaderText="Food Intake" Field="Food" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+                    <!--<GridColumn HeaderText="Flag" TextAlign="TextAlign.Right" Width="50">
+                        <Template>
+                            @{
+                                <SfCheckBox TChecked="bool"></SfCheckBox> //refer to eric's admin.razor
+                            }
+                        </Template>
+                    </GridColumn>-->
+                    <GridColumn HeaderText="Notes" Field="notes" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+                    <GridColumn HeaderText="Date" Field="date" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
+    </div>
+</div>
+<!--ADDING ADD FOOD ITEM AND DELETE FOOD ITEM BUTTONS-->
 
-<SfButton CssClass="e-info">FAQ</SfButton>
+
+<div class='e-input-group'>
+    
+     <SfButton  CssClass="e-info" @onclick="@(e=> getUserInputForEntry(@food, @notes))">Add</SfButton>
+    
+     
+  
+    <input class='e-input' @bind-value="@food" @bind-value:event="oninput" Placeholder='Food' type='text'>
+   <input class='e-input' @bind-value="@notes" @bind-value:event="oninput" Placeholder='Notes' type='text'>
+   <SfTextBox Placeholder='First Name'></SfTextBox>
+</div>
+
+
+
+
+<!--THE CHAT BOT-->
+<iframe src="https://copilotstudio.microsoft.com/environments/Default-5011c7c6-0ab4-46ab-9ef4-fae74a921a7f/bots/crad4_capstoneProjectBot/webchat?__version__=2"
+frameborder="0" style="width: 1000px; height: 400px; margin: 0 auto; display: block;"></iframe>
+
+<!--<SfButton CssClass="e-info">FAQ</SfButton>
 <SfButton CssClass="e-info">Monash</SfButton>
-<SfButton CssClass="e-info">Docs</SfButton>
+<SfButton CssClass="e-info">Docs</SfButton>-->
 
 <!--<p role="status">Current count: @currentCount</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>-->
 
 @code {
-    private SfGrid<int> Grid;
-    public List<int> Orders = new List<int> {1,2,3,4,5};
+    private SfGrid<HPCFodmapProject.Shared.IntakeDto> Grid;
+
+
 }

@@ -4,6 +4,7 @@ using HPCFodmapProject.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HPCFodmapProject.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240321163654_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -216,12 +218,14 @@ namespace HPCFodmapProject.Server.Data.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("firstname")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("lastlogin")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("lastname")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("registrationdate")
@@ -249,6 +253,10 @@ namespace HPCFodmapProject.Server.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FoodID"), 1L, 1);
 
                     b.Property<string>("foodName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("issues")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -322,6 +330,7 @@ namespace HPCFodmapProject.Server.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("notes")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IntakeID");
@@ -347,9 +356,6 @@ namespace HPCFodmapProject.Server.Data.Migrations
                     b.Property<string>("UserID")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("userFlagged")
-                        .HasColumnType("int");
 
                     b.Property<int>("userIsAffected")
                         .HasColumnType("int");
