@@ -11,7 +11,9 @@ namespace HPCFodmapProject.Server.Models
         [Key]
         public int FoodID { get; set; }
         public string foodName { get; set; }
-
+        //adding for new relationship with ingredient table
+        [InverseProperty("Food")]
+        public virtual ICollection<Ingredients> Ingredients { get; } = new List<Ingredients>();
 
         [InverseProperty("Food")]
         public virtual ICollection<Intake> Intake { get; } = new List<Intake>();
