@@ -5,6 +5,10 @@ using System.Net.Http.Json;
 using HPCFodmapProject.Client.HttpRepository;
 //using System.Net.WebUtility;
 using System.Web;
+using Syncfusion.Blazor.Grids;
+using Syncfusion.Blazor.Notifications;
+using Syncfusion.Blazor.Navigations;
+using static System.Net.WebRequestMethods;
 
 
 
@@ -101,18 +105,20 @@ public partial class Home
 
 
     //method for getting ingredients popup
-    public async Task UserDoubleClickHandler(RecordDoubleClickEventArgs<UserEditDto> args)
+    public async Task UserDoubleClickHandler(RecordDoubleClickEventArgs<IntakeDto> args)
     {
         try
         {
-            userEditDto = args.RowData;
+            foodEntry = args.RowData;
+            string foodN = foodEntry.Food;
+            selectedFoodIngredients = await UserFoodDiaryHttpRepository.GetIngredients(foodN,userN).ConfigureAwait(false);
             IsUserModalVisible = true;
         }
         catch
         {
-            toastContent = "Error accessing user data in grid";
-            toastSuccess = "e-toast-danger";
-            await ToastObj.ShowAsync();
+            //toastContent = "Error accessing user data in grid";
+            //toastSuccess = "e-toast-danger";
+            //await ToastObj.ShowAsync();
         }
     }
 }
