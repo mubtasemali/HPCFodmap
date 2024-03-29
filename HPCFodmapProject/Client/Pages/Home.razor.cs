@@ -121,5 +121,10 @@ public partial class Home
             //await ToastObj.ShowAsync();
         }
     }
+    //close method for modol
+    public async Task closeIngredientsPopUp()
+    {
+        IsUserModalVisible = false;
+    }
 }
     
