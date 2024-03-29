@@ -14,7 +14,6 @@ public class UserFoodDiaryHttpRepository : IUserFoodDiaryHttpRepository
     {
         _httpClient = httpClient;
     }
-    //private readonly HttpClient _httpClient;
     public async Task<List<IntakeDto>> GetFoodIntake(string userName)
         {
             List<IntakeDto>? foodDiary = new List<IntakeDto>();
@@ -38,7 +37,16 @@ public class UserFoodDiaryHttpRepository : IUserFoodDiaryHttpRepository
         return selectedFoodIngredients;
     }
 
+    public async Task<bool> AddFoodIntake(string userName, string foodName, string notes)
+    {
+        string passString = $"api/addfoodintake?username={userName}&foodname={foodName}&notes={notes}";
+        var res = await _httpClient.GetFromJsonAsync<bool>(passString);
+        if (res)
+        {
+            return true;
+        }
+        return false;
+    }
 
 
-
-}
+    }

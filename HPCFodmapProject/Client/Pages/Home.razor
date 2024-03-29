@@ -5,21 +5,6 @@
 @using Syncfusion.Blazor.Popups
 @using HPCFodmapProject.Shared;
 
-<!--<style>
-.column {
-    float: left;
-    width: 33.33%;
-    padding: 10px;
-    height: 900px;
-}
-
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-</style>-->
-
 <PageTitle>Home</PageTitle>
 
 <h1 style="text-align: center">Gut Guardian</h1>
@@ -56,15 +41,10 @@
         </div>
     </div>
 </div>
-<!--ADDING ADD FOOD ITEM AND DELETE FOOD ITEM BUTTONS-->
-
-
+<!--For user to add food entries and notes-->
 <div class='e-input-group'>
     
      <SfButton  CssClass="e-info" @onclick="@(e=> getUserInputForEntry(@food, @notes))">Add</SfButton>
-    
-     
-  
     <input class='e-input' @bind-value="@food" @bind-value:event="oninput" Placeholder='Food' type='text'>
    <input class='e-input' @bind-value="@notes" @bind-value:event="oninput" Placeholder='Notes' type='text'>
    <SfTextBox Placeholder='First Name'></SfTextBox>
@@ -81,11 +61,7 @@ frameborder="0" style="width: 1000px; height: 400px; margin: 0 auto; display: bl
 <SfButton CssClass="e-info">Monash</SfButton>
 <SfButton CssClass="e-info">Docs</SfButton>-->
 
-<!--<p role="status">Current count: @currentCount</p>
-
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>-->
-
-<!--ADDING MODOL FOR INGREDIENTS POP UP FUNCTIONALITY-->
+<!--MODOL FOR INGREDIENTS POP UP FUNCTIONALITY-->
 <SfDialog Width="800px" Height="600px" IsModal="true" @bind-Visible="@IsUserModalVisible">
    <DialogButtons>
                 <DialogButton Content="CLOSE" IsPrimary="true" OnClick="@closeIngredientsPopUp" />
