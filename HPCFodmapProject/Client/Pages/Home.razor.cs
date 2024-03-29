@@ -52,7 +52,7 @@ public partial class Home
     //changed method from void so I can call ReloadGrid method
    public async Task getUserInputForEntry(string foodI, string notesI)
     {
-        var foodResult = AddFoodIntake(userN, foodI, notesI);
+        var foodResult = UserFoodDiaryHttpRepository.AddFoodIntake(userN, foodI, notesI);
     if(foodResult != null)
         {
             //need to delay to show most recent change
@@ -63,17 +63,7 @@ public partial class Home
 
         Console.WriteLine("food result: " + foodResult);
     }
-    // 
-    public async Task<bool> AddFoodIntake(string userName, string foodName, string notes)
-    {
-        string passString = $"api/addfoodintake?username={userName}&foodname={foodName}&notes={notes}";
-        var res = await Http.GetFromJsonAsync<bool>(passString);
-        if (res)
-        {
-            return true;
-        }
-        return false;
-    }
+   
 //method for refreshing the page 
     public async Task ReloadGrid()
     {
