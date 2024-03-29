@@ -5,6 +5,10 @@ using System.Net.Http.Json;
 using HPCFodmapProject.Client.HttpRepository;
 //using System.Net.WebUtility;
 using System.Web;
+using Syncfusion.Blazor.Grids;
+using Syncfusion.Blazor.Notifications;
+using Syncfusion.Blazor.Navigations;
+using static System.Net.WebRequestMethods;
 
 
 
@@ -27,6 +31,11 @@ public partial class Home
     public string notes = null;
     //This user variable is to pass to the AddFoodIntake method
     public string userN = null;
+
+    //Creating a list of ingredientsDTOs for when ever user clicks on dialouge box
+    List<IngredientsDto> selectedFoodIngredients = new List<IngredientsDto>();
+    private bool IsUserModalVisible { get; set; } = false;
+    public IntakeDto foodEntry = new IntakeDto();
     protected override async Task OnInitializedAsync()
 
     {
@@ -36,7 +45,7 @@ public partial class Home
         this.userN = uName;
         if (UserAuth is not null && UserAuth.IsAuthenticated)
         {
-            foodDiary = await UserFoodDiaryHttpRepository.GetIngredients(UserAuth.Name);
+            foodDiary = await UserFoodDiaryHttpRepository.GetFoodIntake(UserAuth.Name);
             //COMMENTING OUT TO USE METHOD (THIS  WORKS)
             //foodDiary = await Http.GetFromJsonAsync<List<IntakeDto>>("api/getUserFoodIntake?username=" + UserAuth.Name);
 
@@ -90,8 +99,32 @@ public partial class Home
         this.userN = uName;
         if (UserAuth is not null && UserAuth.IsAuthenticated)
         {
-            foodDiary = await UserFoodDiaryHttpRepository.GetIngredients(UserAuth.Name);
+            foodDiary = await UserFoodDiaryHttpRepository.GetFoodIntake(UserAuth.Name);
         }
+    }
+
+
+    //method for getting ingredients popup
+    public async Task UserDoubleClickHandler(RecordDoubleClickEventArgs<IntakeDto> args)
+    {
+        try
+        {
+            foodEntry = args.RowData;
+            string foodN = foodEntry.Food;
+            selectedFoodIngredients = await UserFoodDiaryHttpRepository.GetIngredients(foodN,userN).ConfigureAwait(false);
+            IsUserModalVisible = true;
+        }
+        catch
+        {
+            //toastContent = "Error accessing user data in grid";
+            //toastSuccess = "e-toast-danger";
+            //await ToastObj.ShowAsync();
+        }
+    }
+    //close method for modol
+    public async Task closeIngredientsPopUp()
+    {
+        IsUserModalVisible = false;
     }
 }
     

@@ -15,7 +15,7 @@ public class UserFoodDiaryHttpRepository : IUserFoodDiaryHttpRepository
         _httpClient = httpClient;
     }
     //private readonly HttpClient _httpClient;
-    public async Task<List<IntakeDto>> GetIngredients(string userName)
+    public async Task<List<IntakeDto>> GetFoodIntake(string userName)
         {
             List<IntakeDto>? foodDiary = new List<IntakeDto>();
         foodDiary = await _httpClient.GetFromJsonAsync<List<IntakeDto>>($"api/getUserFoodIntake?username={userName}");
@@ -27,20 +27,17 @@ public class UserFoodDiaryHttpRepository : IUserFoodDiaryHttpRepository
 
 
         }
-
-    //should work?
-    public async Task<bool> AddFoodIntake(string userName, string foodName, string notes)
+    public async Task<List<IngredientsDto>> GetIngredients(string foodName, string userName)
     {
-        IntakeDto entry = new IntakeDto();
-        string passString = $"api/addfoodintake?username?foodname?notes={userName}/{foodName}/{notes}";
-       string newString = Uri.EscapeDataString(passString);
-        var res = await _httpClient.PostAsJsonAsync(passString, entry);
-        if (res.IsSuccessStatusCode)
-        {
-            return true;
-        }
-        return false;
+        List<IngredientsDto>? selectedFoodIngredients = new List<IngredientsDto>();
+        selectedFoodIngredients = await _httpClient.GetFromJsonAsync<List<IngredientsDto>>($"api/getIngredients?foodName={foodName}&username={userName}");
+        //if (foodDiary == null)
+        //{
+
+        //}
+        return selectedFoodIngredients;
     }
+
 
 
 
