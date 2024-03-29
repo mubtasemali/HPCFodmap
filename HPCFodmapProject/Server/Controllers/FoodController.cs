@@ -187,9 +187,10 @@ public class FoodController : Controller
 
         return intakes;
     }
+
     [HttpDelete]
     [Route("api/deleteIntake")]
-    public async Task<IActionResult> DeleteFoodIntake(string username, IntakeDto intake)
+    public async Task<IActionResult> DeleteFoodIntake(string username, DeleteIntakeDto intake)
     //limit on notes in query string
     {
 
@@ -205,7 +206,14 @@ public class FoodController : Controller
                           where f.foodName == foodName
                           select f.FoodID).FirstOrDefault();
 
-            var intakeTemp = new Intake { UserID = userID, FoodID = foodID, notes = intake.notes, date = intake.date };
+            //get  IntakeID with FoodID and Intake.Date
+            var IntakeId = (from i in _context.Intake
+                            where i.FoodID == foodID
+&& i.UserID == userID
+&& intake.date == i.date
+                            select i.IntakeID).FirstOrDefault();
+
+            var intakeTemp = new Intake { IntakeID = IntakeId, UserID = userID, FoodID = foodID, notes = intake.notes, date = intake.date };
             _context.Intake.Remove(intakeTemp);
 
 
@@ -216,60 +224,6 @@ public class FoodController : Controller
         {
             return BadRequest(e.Message);
         }
-    }
-
-    [HttpGet]
-    [Route("api/getFlaggedIntake")]
-    public async Task<List<FlaggedDto>> GetFlaggedIntake(string username)
-    {
-        var userId = (from u in _context.Users
-                      where u.UserName == username
-                      select u.Id).FirstOrDefault();
-
-        var IntakeFoods = GetFoodIntake(username).Result;
-        var flaggedIntake = new List<FlaggedDto>();
-        //get all flagged ingredients from IntakeFoods
-        foreach (var food in IntakeFoods)
-        {
-            if (food.harmful)
-            {
-                var flaggedFood = new FlaggedDto
-                {
-                    ingredient = food.Food,
-                    issues = food.notes,
-                    lastEaten = food.date
-                };
-                flaggedIntake.Add(flaggedFood);
-            }
-        }
-        var flaggedIngredients = new List<FlaggedDto>();
-        foreach (var flagged in flaggedIntake)
-        {
-            //get all ingredient of flagged food
-            var ingredients = GetIngredients(flagged.ingredient, username).Result;
-            foreach (var ingredient in ingredients)
-            {
-                if (ingredient.harmful)
-                {
-                    var flaggedIngredient = new FlaggedDto
-                    {
-                        ingredient = ingredient.IngredientsName,
-                        issues = flagged.issues,
-                        lastEaten = flagged.lastEaten
-                    };
-                    flaggedIngredients.Add(flaggedIngredient);
-                }
-            }
-          
-        }
-
-
-
-       
-
-        
-
-        return flaggedIngredients;
     }
 
 
@@ -313,8 +267,13 @@ public class FoodController : Controller
         var userID = (from u in _context.Users
                       where u.UserName == username
                       select u.Id).FirstOrDefault();
+        var IntakeId = (from i in _context.Intake
+                        where i.FoodID == foodID
+&& i.UserID == userID
+&& intake.date == i.date
+                        select i.IntakeID).FirstOrDefault();
 
-        var existingIntake = _context.Intake.SingleOrDefault(i => i.FoodID == foodID && i.UserID == userID && i.date == intake.date);
+        var existingIntake = _context.Intake.SingleOrDefault(i => i.FoodID == foodID && i.UserID == userID && i.date == intake.date && i.IntakeID == IntakeId);
 
         if (existingIntake != null)
         {
