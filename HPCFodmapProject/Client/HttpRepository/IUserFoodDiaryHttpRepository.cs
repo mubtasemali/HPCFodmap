@@ -3,6 +3,6 @@
     using HPCFodmapProject.Shared;
     public interface IUserFoodDiaryHttpRepository
     {
-        Task<List<IntakeDto>> GetIngredients(string userName);
+        Task<List<IntakeDto>> GetFoodIntake(string userName);
     }
 }

@@ -27,6 +27,9 @@ public partial class Home
     public string notes = null;
     //This user variable is to pass to the AddFoodIntake method
     public string userN = null;
+
+    //Creating a list of ingredientsDTOs for when ever user clicks on dialouge box
+    List<IngredientsDto> selectedFoodIngredients = new List<IngredientsDto>();
     protected override async Task OnInitializedAsync()
 
     {
@@ -36,7 +39,7 @@ public partial class Home
         this.userN = uName;
         if (UserAuth is not null && UserAuth.IsAuthenticated)
         {
-            foodDiary = await UserFoodDiaryHttpRepository.GetIngredients(UserAuth.Name);
+            foodDiary = await UserFoodDiaryHttpRepository.GetFoodIntake(UserAuth.Name);
             //COMMENTING OUT TO USE METHOD (THIS  WORKS)
             //foodDiary = await Http.GetFromJsonAsync<List<IntakeDto>>("api/getUserFoodIntake?username=" + UserAuth.Name);
 
@@ -90,8 +93,11 @@ public partial class Home
         this.userN = uName;
         if (UserAuth is not null && UserAuth.IsAuthenticated)
         {
-            foodDiary = await UserFoodDiaryHttpRepository.GetIngredients(UserAuth.Name);
+            foodDiary = await UserFoodDiaryHttpRepository.GetFoodIntake(UserAuth.Name);
         }
     }
+
+
+    //method for getting ingredients
 }
     

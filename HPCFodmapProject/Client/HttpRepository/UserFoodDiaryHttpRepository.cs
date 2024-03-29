@@ -15,7 +15,7 @@ public class UserFoodDiaryHttpRepository : IUserFoodDiaryHttpRepository
         _httpClient = httpClient;
     }
     //private readonly HttpClient _httpClient;
-    public async Task<List<IntakeDto>> GetIngredients(string userName)
+    public async Task<List<IntakeDto>> GetFoodIntake(string userName)
         {
             List<IntakeDto>? foodDiary = new List<IntakeDto>();
         foodDiary = await _httpClient.GetFromJsonAsync<List<IntakeDto>>($"api/getUserFoodIntake?username={userName}");
