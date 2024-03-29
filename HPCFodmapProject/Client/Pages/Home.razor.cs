@@ -165,10 +165,10 @@ public partial class Home
             food = intake.Food;
             Console.WriteLine("showing I am getting the food0: " + food);
         }
-        string passString = $"api/deleteIntake?username={userName}&intake={intake}";
+        string passString = $"api/deleteIntake?username={userName}";
         //I BELIEVE THE ISSUE IS WITH THE GET FROM JSON
-        var res = await Http.GetFromJsonAsync<bool>(passString);
-        if (res)
+        var res = await Http.PostAsJsonAsync<DeleteIntakeDto>(passString,intake);
+        if (res.IsSuccessStatusCode)
         {
             return true;
         }
