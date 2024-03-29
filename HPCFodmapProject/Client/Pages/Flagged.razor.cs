@@ -17,6 +17,7 @@ public partial class Flagged
     //List<IntakeDto> foodDiary = new List<IntakeDto>();
     List<WTDto> whitelistIngredients = new List<WTDto>();
     List<FlaggedDto> flaggedIngredients = new List<FlaggedDto>();
+    public string userN = null;
     protected override async Task OnInitializedAsync()
 
     {
@@ -57,6 +58,18 @@ public partial class Flagged
             //updateFlaggedFood
             //await Http.GetFromJsonAsync<>("api/updateFlaggedFood?username=" + UserAuth.Name);
             await Http.GetAsync($"api/updateFlaggedFood?username={UserAuth.Name}&IngName={ingToUpdate}");
+        }
+    }
+
+    public async Task ReloadGrid()
+    {
+        var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
+        string uName = UserAuth.Name;
+        this.userN = uName;
+        if (UserAuth is not null && UserAuth.IsAuthenticated)
+        {
+            whitelistIngredients = await Http.GetFromJsonAsync<List<WTDto>>("api/getWhitelist?username=" + UserAuth.Name);
+            flaggedIngredients = await Http.GetFromJsonAsync<List<FlaggedDto>>("api/GetUserFlagged?username=" + UserAuth.Name);
         }
     }
 }

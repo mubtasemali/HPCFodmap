@@ -51,10 +51,13 @@
     </div>
 </div>
 
+<center><SfButton @ref="ToggleBtn" @onclick="ReloadGrid" IsPrimary="true" Content="Remove" style="text-align:center"></SfButton></center>
+
 <iframe src="https://copilotstudio.microsoft.com/environments/Default-5011c7c6-0ab4-46ab-9ef4-fae74a921a7f/bots/crad4_capstoneProjectBot/webchat?__version__=2"
 frameborder="0" style="width: 1000px; height: 400px; margin: 0 auto; display: block;"></iframe>
 
 @code {
     private SfGrid<HPCFodmapProject.Shared.WTDto> Grid;
     private SfGrid<HPCFodmapProject.Shared.FlaggedDto> Grid2;
+    SfButton ToggleBtn;
 }
