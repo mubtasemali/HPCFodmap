@@ -4,6 +4,14 @@
 @using HPCFodmapProject.Client.HttpRepository;
 @using Syncfusion.Blazor.Popups
 @using HPCFodmapProject.Shared;
+<!--adding for delete-->
+@using HPCFodmapProject.Client.HttpRepository
+<!--added for new delete functionality-->
+@using Syncfusion.Blazor.Navigations
+@using using HPCFodmapProject.Shared
+@using Syncfusion.Blazor.Notifications
+@using Syncfusion.Blazor.Inputs
+
 
 <PageTitle>Home</PageTitle>
 
@@ -17,11 +25,13 @@
             TValue="IntakeDto" 
             AllowPaging="true" 
             AllowSorting="true" 
-            Height="500">
+            Height="500"
+            Toolbar=@(new List<object>() {new ItemModel() {Text = "Edit", PrefixIcon="e.add", Id="EditEntry"},
+                new ItemModel() {Text = "Delete", PrefixIcon="e.delete", Id="DeleteEntry"}})>
             <GridEvents
                 TValue="IntakeDto" 
                 OnRecordDoubleClick="UserDoubleClickHandler"
-            >
+                RowSelected="UserRowSelectedHandler">
 
             </GridEvents>
                 <GridColumns>
