@@ -4,6 +4,14 @@
 @using HPCFodmapProject.Client.HttpRepository;
 @using Syncfusion.Blazor.Popups
 @using HPCFodmapProject.Shared;
+<!--adding for delete-->
+
+<!--added for new delete functionality-->
+@using Syncfusion.Blazor.Navigations
+@using HPCFodmapProject.Shared
+@using Syncfusion.Blazor.Notifications
+@using Syncfusion.Blazor.Inputs
+
 
 <PageTitle>Home</PageTitle>
 
@@ -13,27 +21,24 @@
     <div class="row">
         <div class="col">
             <SfGrid @ref="Grid"
-            DataSource="foodDiary" 
+            DataSource="@foodDiary" 
             TValue="IntakeDto" 
             AllowPaging="true" 
             AllowSorting="true" 
-            Height="500">
+            Height="500"
+            Toolbar=@(new List<object>() {
+                new ItemModel() {Text = "Delete", PrefixIcon="e.delete", Id="DeleteEntry"}})>
             <GridEvents
                 TValue="IntakeDto" 
                 OnRecordDoubleClick="UserDoubleClickHandler"
-            >
+                RowSelected="UserRowSelectedHandler"
+            OnToolbarClick="ToolbarClickHandler">
 
             </GridEvents>
                 <GridColumns>
 
                     <GridColumn HeaderText="Food Intake" Field="Food" TextAlign="TextAlign.Left" Width="300"></GridColumn>
-                    <!--<GridColumn HeaderText="Flag" TextAlign="TextAlign.Right" Width="50">
-                        <Template>
-                            @{
-                                <SfCheckBox TChecked="bool"></SfCheckBox> //refer to eric's admin.razor
-                            }
-                        </Template>
-                    </GridColumn>-->
+                  
                     <GridColumn HeaderText="Notes" Field="notes" TextAlign="TextAlign.Left" Width="300"></GridColumn>
                     <GridColumn HeaderText="Date" Field="date" TextAlign="TextAlign.Left" Width="300"></GridColumn>
                 </GridColumns>
@@ -47,7 +52,6 @@
      <SfButton  CssClass="e-info" @onclick="@(e=> getUserInputForEntry(@food, @notes))">Add</SfButton>
     <input class='e-input' @bind-value="@food" @bind-value:event="oninput" Placeholder='Food' type='text'>
    <input class='e-input' @bind-value="@notes" @bind-value:event="oninput" Placeholder='Notes' type='text'>
-   <SfTextBox Placeholder='First Name'></SfTextBox>
 </div>
 
 

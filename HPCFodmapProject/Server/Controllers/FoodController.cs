@@ -188,9 +188,9 @@ public class FoodController : Controller
         return intakes;
     }
 
-    [HttpDelete]
+    [HttpPost]
     [Route("api/deleteIntake")]
-    public async Task<IActionResult> DeleteFoodIntake(string username, DeleteIntakeDto intake)
+    public async Task<IActionResult> DeleteFoodIntake(string username, [FromBody] DeleteIntakeDto intake)
     //limit on notes in query string
     {
 
