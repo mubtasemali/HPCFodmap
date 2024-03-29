@@ -26,12 +26,13 @@ public partial class Home
     public string notes = null;
     //This user variable is to pass to the AddFoodIntake method
     public string userN = null;
-
     //variables for ingredients model
     //Creating a list of ingredientsDTOs for when ever user clicks on dialouge box
     List<IngredientsDto> selectedFoodIngredients = new List<IngredientsDto>();
     private bool IsUserModalVisible { get; set; } = false;
     public IntakeDto foodEntry = new IntakeDto();
+    //adding dto that we would pass to delete intake method
+    IntakeDto deleteIntakeDto = new IntakeDto();
 
 
     protected override async Task OnInitializedAsync()
@@ -98,6 +99,78 @@ public partial class Home
     public async Task closeIngredientsPopUp()
     {
         IsUserModalVisible = false;
+    }
+
+    //adding method for delete and edition functionality to handle click
+    public async Task ToolbarClickHandler(ClickEventArgs args)
+    {
+
+        //THOUGHTS: I need to get the intakedto for what the user would like to delete
+        //DONE!!!! I need to create a method that calls the deleteintake api and takes in intakedto and username
+        //i must calle the deleteintake method that i create
+
+
+
+        if (args.Item.Id == "DeleteEntry")
+        {
+            //bool isFoodIntakeDeleted = false;
+            if (deleteIntakeDto is not null)
+            {
+                DeleteIntakeDto returnDeleteDto = new DeleteIntakeDto();
+                //assigning values because deleteDto/controller class requires one less variable
+                //assigning values because deleteDto/controller class requires one less variable
+                returnDeleteDto.Food = deleteIntakeDto.Food;
+                returnDeleteDto.notes = deleteIntakeDto.notes;
+                returnDeleteDto.date = deleteIntakeDto.date;
+                var isFoodIntakeDeleted = UserFoodDiaryHttpRepository.DeleteFoodIntake(userN, returnDeleteDto);
+                //make it refresh after delete
+                await Task.Delay(5000);
+                await ReloadGrid();
+            }
+
+            //COMMENTING OUT FOR NOW    
+            //    var res = await UserRepo.DeleteUser(userEditDto.Id);
+            //    if (res)
+            //    {
+            //        await ReloadGrid();
+            //        toastContent = $"{userEditDto.Email} removed!";
+            //        StateHasChanged();
+            //        await ToastObj.ShowAsync();
+            //    }
+            //    else
+            //    {
+            //        toastContent = $"Failed to delete user {userEditDto.Email}";
+            //        toastSuccess = "e-toast-danger";
+            //        StateHasChanged();
+            //        await ToastObj.ShowAsync();
+            //    }
+
+            //}
+            //else
+            //{
+            //    toastContent = $"Please select a user";
+            //    toastSuccess = "e-toast-warning";
+            //    StateHasChanged();
+            //    await ToastObj.ShowAsync();
+            //}
+        }
+    }
+
+   
+
+    //ading another method for delete function: selecting an entry
+    public async Task UserRowSelectedHandler(RowSelectEventArgs<IntakeDto> args)
+    {
+        try
+        {
+            deleteIntakeDto = args.Data;
+        }
+        catch
+        {
+            /* toastContent = "Error accessing user data in grid";
+             toastSuccess = "e-toast-danger";
+             await ToastObj.ShowAsync();*/
+        }
     }
 }
     
