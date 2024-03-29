@@ -122,7 +122,10 @@ public partial class Home
                 returnDeleteDto.Food = deleteIntakeDto.Food;
                 returnDeleteDto.notes = deleteIntakeDto.notes;
                 returnDeleteDto.date = deleteIntakeDto.date;
-                var isFoodIntakeDeleted = DeleteFoodIntake(userN, returnDeleteDto);
+                var isFoodIntakeDeleted = UserFoodDiaryHttpRepository.DeleteFoodIntake(userN, returnDeleteDto);
+                //make it refresh after delete
+                await Task.Delay(5000);
+                await ReloadGrid();
             }
 
             //COMMENTING OUT FOR NOW    
@@ -153,27 +156,7 @@ public partial class Home
         }
     }
 
-    //create method for DeleteFoodIntake
-    public async Task<bool> DeleteFoodIntake(string userName, DeleteIntakeDto? intake)
-    {
-        //for testing
-        string food = "did not send food";
-        Console.WriteLine("In the controller");
-        //if statement is for testing
-        if (intake is not null)
-        {
-            food = intake.Food;
-            Console.WriteLine("showing I am getting the food0: " + food);
-        }
-        string passString = $"api/deleteIntake?username={userName}";
-        //I BELIEVE THE ISSUE IS WITH THE GET FROM JSON
-        var res = await Http.PostAsJsonAsync<DeleteIntakeDto>(passString,intake);
-        if (res.IsSuccessStatusCode)
-        {
-            return true;
-        }
-        return false;
-    }
+   
 
     //ading another method for delete function: selecting an entry
     public async Task UserRowSelectedHandler(RowSelectEventArgs<IntakeDto> args)

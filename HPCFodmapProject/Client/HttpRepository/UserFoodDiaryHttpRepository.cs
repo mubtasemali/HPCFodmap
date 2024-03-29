@@ -48,5 +48,30 @@ public class UserFoodDiaryHttpRepository : IUserFoodDiaryHttpRepository
         return false;
     }
 
+    //create method for DeleteFoodIntake
+    public async Task<bool> DeleteFoodIntake(string userName, DeleteIntakeDto? intake)
+    {
+        //for testing
+        string food = "did not send food";
+        Console.WriteLine("In the controller");
+        //if statement is for testing
+        if (intake is not null)
+        {
+            food = intake.Food;
+            Console.WriteLine("showing I am getting the food0: " + food);
+        }
+        string passString = $"api/deleteIntake?username={userName}";
+        var res = await _httpClient.PostAsJsonAsync<DeleteIntakeDto>(passString,intake);
+        if (res.IsSuccessStatusCode)
+        {
+            ////make it refresh after delete
+            //await Task.Delay(5000);
+            //await ReloadGrid();
+            return true;
+        }
+        return false;
+    }
+
+    
 
     }
