@@ -30,6 +30,8 @@ public partial class Home
 
     //Creating a list of ingredientsDTOs for when ever user clicks on dialouge box
     List<IngredientsDto> selectedFoodIngredients = new List<IngredientsDto>();
+    private bool IsUserModalVisible { get; set; } = false;
+    public IntakeDto foodEntry = new IntakeDto();
     protected override async Task OnInitializedAsync()
 
     {
@@ -98,6 +100,20 @@ public partial class Home
     }
 
 
-    //method for getting ingredients
+    //method for getting ingredients popup
+    public async Task UserDoubleClickHandler(RecordDoubleClickEventArgs<UserEditDto> args)
+    {
+        try
+        {
+            userEditDto = args.RowData;
+            IsUserModalVisible = true;
+        }
+        catch
+        {
+            toastContent = "Error accessing user data in grid";
+            toastSuccess = "e-toast-danger";
+            await ToastObj.ShowAsync();
+        }
+    }
 }
     

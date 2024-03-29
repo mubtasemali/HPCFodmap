@@ -2,6 +2,7 @@
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Buttons
 @using HPCFodmapProject.Client.HttpRepository;
+@using Syncfusion.Blazor.Popups
 
 <!--<style>
 .column {
@@ -25,7 +26,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col">
-            <SfGrid @ref="Grid" DataSource="foodDiary" AllowPaging="true" AllowSorting="true" Height="500">
+            <SfGrid @ref="Grid" DataSource="foodDiary" TValue="foodEntry" AllowPaging="true" AllowSorting="true" Height="500">
                 <GridColumns>
                     <GridColumn HeaderText="Food Intake" Field="Food" TextAlign="TextAlign.Left" Width="300"></GridColumn>
                     <!--<GridColumn HeaderText="Flag" TextAlign="TextAlign.Right" Width="50">
@@ -72,6 +73,23 @@ frameborder="0" style="width: 1000px; height: 400px; margin: 0 auto; display: bl
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>-->
 
 <!--ADDING MODOL FOR INGREDIENTS POP UP FUNCTIONALITY-->
+<SfDialog Width="800px" Height="600px" IsModal="true" @bind-Visible="@IsUserModalVisible">
+    <DialogTemplates>
+        <Header>Food's Ingredients</Header>
+        <Content>
+                       <SfGrid @ref="Grid" DataSource="selectedFoodIngredients" AllowPaging="true" AllowSorting="true" Height="500">
+                <GridColumns>
+                    <GridColumn HeaderText="Ingredient Name" Field="ingredientsName" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+        
+                    <GridColumn HeaderText="Is it Harmful?" Field="harmful" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+                    <GridColumn HeaderText="Is it a fodmap food?" Field="inFodMap" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </Content>
+    </DialogTemplates>
+</SfDialog>
+
+
 
 
 @code {
