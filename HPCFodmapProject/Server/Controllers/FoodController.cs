@@ -95,9 +95,9 @@ public class FoodController : Controller
     public async Task<bool> AddFoodIntake(string username, string foodName, string notes)
     //limit on notes in query string
     {
-        username = HttpUtility.UrlDecode(username);
+/*        username = HttpUtility.UrlDecode(username);
         foodName = HttpUtility.UrlDecode(foodName);
-        notes = HttpUtility.UrlDecode(notes);
+        notes = HttpUtility.UrlDecode(notes);*/
         try
         {
             DateTime date = DateTime.Now;
@@ -189,7 +189,7 @@ public class FoodController : Controller
     }
     [HttpDelete]
     [Route("api/deleteIntake")]
-    public async Task<IActionResult> DeleteFoodIntake(string username, IntakeDto intake)
+    public async Task<IActionResult> DeleteFoodIntake(string username, DeleteIntakeDto intake)
     //limit on notes in query string
     {
 
