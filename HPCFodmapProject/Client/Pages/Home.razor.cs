@@ -33,6 +33,10 @@ public partial class Home
     public IntakeDto foodEntry = new IntakeDto();
     //adding dto that we would pass to delete intake method
     IntakeDto deleteIntakeDto = new IntakeDto();
+    //adding toast
+    public SfToast ToastObj;
+    private string? toastContent = string.Empty;
+    private string? toastSuccess = "e-toast-success";
 
     protected override async Task OnInitializedAsync()
     {
@@ -80,9 +84,9 @@ public partial class Home
         }
         catch
         {
-            //toastContent = "Error accessing user data in grid";
-            //toastSuccess = "e-toast-danger";
-            //await ToastObj.ShowAsync();
+            toastContent = "Error accessing ingredients grid";
+            toastSuccess = "e-toast-danger";
+            ToastObj.ShowAsync();
         }
     }
     //close method for modol
@@ -107,34 +111,24 @@ public partial class Home
                 await Task.Delay(5000);
                 await ReloadGrid();
             }
+            else
+            {
+                toastContent = $"Failed to delete user entry";
+                toastSuccess = "e-toast-danger";
+                StateHasChanged();
+                await ToastObj.ShowAsync();
+            }
 
-            //COMMENTING OUT FOR NOW    
-            //    var res = await UserRepo.DeleteUser(userEditDto.Id);
-            //    if (res)
-            //    {
-            //        await ReloadGrid();
-            //        toastContent = $"{userEditDto.Email} removed!";
-            //        StateHasChanged();
-            //        await ToastObj.ShowAsync();
-            //    }
-            //    else
-            //    {
-            //        toastContent = $"Failed to delete user {userEditDto.Email}";
-            //        toastSuccess = "e-toast-danger";
-            //        StateHasChanged();
-            //        await ToastObj.ShowAsync();
-            //    }
-
-            //}
-            //else
-            //{
-            //    toastContent = $"Please select a user";
-            //    toastSuccess = "e-toast-warning";
-            //    StateHasChanged();
-            //    await ToastObj.ShowAsync();
-            //}
+        }
+        else
+        {
+            toastContent = $"Please select an entry";
+            toastSuccess = "e-toast-warning";
+            StateHasChanged();
+            await ToastObj.ShowAsync();
         }
     }
+    
 
    
 
@@ -147,9 +141,9 @@ public partial class Home
         }
         catch
         {
-            /* toastContent = "Error accessing user data in grid";
+             toastContent = "Error accessing food diary in grid";
              toastSuccess = "e-toast-danger";
-             await ToastObj.ShowAsync();*/
+             await ToastObj.ShowAsync();
         }
     }
 
