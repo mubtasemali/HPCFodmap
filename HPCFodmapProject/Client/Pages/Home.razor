@@ -76,9 +76,28 @@ frameborder="0" style="width: 1000px; height: 400px; margin: 0 auto; display: bl
                        <SfGrid  DataSource="selectedFoodIngredients" AllowPaging="true" AllowSorting="true" Height="500">
                 <GridColumns>
                     <GridColumn HeaderText="Ingredient Name" Field="IngredientsName" TextAlign="TextAlign.Left" Width="300"></GridColumn>
-                    <GridColumn HeaderText="Is it a fodmap Ingredient?" Field="harmful" TextAlign="TextAlign.Left" Width="300"></GridColumn>
-                    <GridColumn HeaderText="Is it Harmful?" Field="inFodMap" TextAlign="TextAlign.Left" Width="300"></GridColumn>
-                   
+                    <GridColumn HeaderText="Is it harmful?" Field="harmful" TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                       <GridColumn HeaderText="Whitelist" TextAlign="TextAlign.Right" Width="75">
+                        <Template>
+                            @{
+                                var whitelistIng = context as HPCFodmapProject.Shared.IngredientsDto;
+                                <SfCheckBox TChecked="bool" @onchange="eventArgs => {
+                                    ToggleWhitelist(eventArgs, whitelistIng.IngredientsName);
+                                }"></SfCheckBox>
+                                
+                            }
+                        </Template>
+                    </GridColumn>
+                   <GridColumn HeaderText="Flag" TextAlign="TextAlign.Right" Width="75">
+                        <Template>
+                            @{
+                                var flaggedIng = context as HPCFodmapProject.Shared.IngredientsDto;
+                                <SfCheckBox TChecked="bool" @onchange="eventArgs => {
+                                    ToggleFlagged(eventArgs, flaggedIng.IngredientsName);
+                                }"></SfCheckBox>
+                            }
+                        </Template>
+                    </GridColumn>
                 </GridColumns>
             </SfGrid>
         </Content>
