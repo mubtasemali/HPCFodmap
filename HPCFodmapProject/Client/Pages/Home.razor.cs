@@ -24,7 +24,7 @@ public partial class Home
     //VARIABLES FOR AddFoodIntake
     public string food = null;
     public string notes = null;
-    //This user variable is to pass to the AddFoodIntake method
+    //This user variable is to pass to the AddFoodIntake and other methods
     public string userN = null;
     //variables for ingredients model
     //Creating a list of ingredientsDTOs for when ever user clicks on dialouge box
@@ -34,11 +34,8 @@ public partial class Home
     //adding dto that we would pass to delete intake method
     IntakeDto deleteIntakeDto = new IntakeDto();
 
-
     protected override async Task OnInitializedAsync()
-
     {
-
         var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
          string uName = UserAuth.Name;
         this.userN = uName;
@@ -47,7 +44,6 @@ public partial class Home
             //calls the gedfoodintake method so we can display food entries in food diary
             foodDiary = await UserFoodDiaryHttpRepository.GetFoodIntake(UserAuth.Name);
         }
-       
     }
     //method Method gets user input for food name and food notes from the front end after the button is clicked 
     //changed method from void so I can call ReloadGrid method
@@ -60,11 +56,7 @@ public partial class Home
             await Task.Delay(5000);
             await ReloadGrid();
         }
-        
-
-        Console.WriteLine("food result: " + foodResult);
     }
-   
 //method for refreshing the page 
     public async Task ReloadGrid()
     {
@@ -76,8 +68,6 @@ public partial class Home
             foodDiary = await UserFoodDiaryHttpRepository.GetFoodIntake(UserAuth.Name);
         }
     }
-
-
     //method for getting ingredients popup
     public async Task UserDoubleClickHandler(RecordDoubleClickEventArgs<IntakeDto> args)
     {
@@ -100,24 +90,14 @@ public partial class Home
     {
         IsUserModalVisible = false;
     }
-
     //adding method for delete and edition functionality to handle click
     public async Task ToolbarClickHandler(ClickEventArgs args)
     {
-
-        //THOUGHTS: I need to get the intakedto for what the user would like to delete
-        //DONE!!!! I need to create a method that calls the deleteintake api and takes in intakedto and username
-        //i must calle the deleteintake method that i create
-
-
-
         if (args.Item.Id == "DeleteEntry")
         {
-            //bool isFoodIntakeDeleted = false;
             if (deleteIntakeDto is not null)
             {
                 DeleteIntakeDto returnDeleteDto = new DeleteIntakeDto();
-                //assigning values because deleteDto/controller class requires one less variable
                 //assigning values because deleteDto/controller class requires one less variable
                 returnDeleteDto.Food = deleteIntakeDto.Food;
                 returnDeleteDto.notes = deleteIntakeDto.notes;
@@ -188,8 +168,6 @@ public partial class Home
         var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
         if (UserAuth is not null && UserAuth.IsAuthenticated)
         {
-            //updateFlaggedFood
-            //await Http.GetFromJsonAsync<>("api/updateFlaggedFood?username=" + UserAuth.Name);
             await Http.GetAsync($"api/updateFlaggedFood?username={UserAuth.Name}&IngName={ingToUpdate}");
         }
     }
