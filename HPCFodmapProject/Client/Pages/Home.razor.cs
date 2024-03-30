@@ -172,5 +172,26 @@ public partial class Home
              await ToastObj.ShowAsync();*/
         }
     }
+
+    //adding for toggle whitelist checkbox in ingredients pop up
+    public async Task ToggleWhitelist(Microsoft.AspNetCore.Components.ChangeEventArgs args, string ingToUpdate)
+    {
+        var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
+        if (UserAuth is not null && UserAuth.IsAuthenticated)
+        {
+            await Http.GetAsync($"api/updatewhitelist?username={UserAuth.Name}&IngName={ingToUpdate}");
+        }
+    }
+    //adding for toggle flagged checkbox in ingredients pop up
+    public async Task ToggleFlagged(Microsoft.AspNetCore.Components.ChangeEventArgs args, string ingToUpdate)
+    {
+        var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
+        if (UserAuth is not null && UserAuth.IsAuthenticated)
+        {
+            //updateFlaggedFood
+            //await Http.GetFromJsonAsync<>("api/updateFlaggedFood?username=" + UserAuth.Name);
+            await Http.GetAsync($"api/updateFlaggedFood?username={UserAuth.Name}&IngName={ingToUpdate}");
+        }
+    }
 }
     
