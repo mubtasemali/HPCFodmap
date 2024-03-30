@@ -13,7 +13,7 @@ namespace HPCFodmapProject.Client.TestA
         [SetUp]
         public void Setup()
         {
-            
+
         }
 
         [Test]
@@ -21,7 +21,7 @@ namespace HPCFodmapProject.Client.TestA
         {
             //arrange
             var mockHttp = new MockHttpMessageHandler();
-            var testResponse = @"[{""food"":""hotdog"",""notes"":""bad"",""date"":""2024-03-25T13:15:47.8650963"",""harmful"":true},{""food"":""hotdog"",""notes"":""bad"",""date"":""2024-03-25T13:19:05.3917633"",""harmful"":true},{""food"":""burgers"",""notes"":""was ok"",""date"":""2024-03-28T17:21:28.4438481"",""harmful"":false},{""food"":""hotdog"",""notes"":""was ok"",""date"":""2024-03-28T17:21:37.2425487"",""harmful"":true},{""food"":""cookies"",""notes"":""was ok"",""date"":""2024-03-28T17:21:40.7761023"",""harmful"":false},{""food"":""squash"",""notes"":""was ok"",""date"":""2024-03-28T17:21:44.425102"",""harmful"":false},{""food"":""curry"",""notes"":""was ok"",""date"":""2024-03-28T17:21:48.7910556"",""harmful"":false}]";
+            var testResponse = @"[{""food"":""hotdog"",""notes"":""bad"",""date"":""2024-03-25T13:15:47.8650963"",""harmful"":true},{""food"":""hotdog"",""notes"":""bad"",""date"":""2024-03-25T13:19:05.3917633"",""harmful"":true},{""food"":""hotdog"",""notes"":""was ok"",""date"":""2024-03-28T17:21:37.2425487"",""harmful"":true},{""food"":""cookies"",""notes"":""was ok"",""date"":""2024-03-28T17:21:40.7761023"",""harmful"":false},{""food"":""squash"",""notes"":""was ok"",""date"":""2024-03-28T17:21:44.425102"",""harmful"":false},{""food"":""curry"",""notes"":""was ok"",""date"":""2024-03-28T17:21:48.7910556"",""harmful"":false}]";
 
             mockHttp.When("https://localhost:7192/api/getUserFoodIntake?username=m2@example.com")
                 .Respond("application/json", testResponse);
@@ -56,7 +56,7 @@ namespace HPCFodmapProject.Client.TestA
             Assert.That(response[2].notes, Is.EqualTo(foodData[2].notes));
             Assert.That(response[3].notes, Is.EqualTo(foodData[3].notes));
             Assert.That(response[4].notes, Is.EqualTo(foodData[4].notes));
-            Assert.That(response.Count, Is.EqualTo(7));
+            Assert.That(response.Count, Is.EqualTo(6));
 
         }
 
@@ -65,7 +65,7 @@ namespace HPCFodmapProject.Client.TestA
         {
             //arrange
             var mockHttp = new MockHttpMessageHandler();
-            var testResponse=  @"[{""IngredientsName"":""flour"",""harmful"":true,""inFodMap"":false},{""IngredientsName"":""tomato"",""harmful"":false,""inFodMap"":false},{""IngredientsName"":""yeast"",""harmful"":true,""inFodMap"":false}]"; ;
+            var testResponse = @"[{""IngredientsName"":""flour"",""harmful"":true,""inFodMap"":false},{""IngredientsName"":""tomato"",""harmful"":false,""inFodMap"":false},{""IngredientsName"":""yeast"",""harmful"":true,""inFodMap"":false}]"; ;
             mockHttp.When("https://localhost:7192/api/getIngredients?foodName=burgers&username=m2%40example.com").Respond("application/json", testResponse);
             var client = mockHttp.ToHttpClient();
             client.BaseAddress = new Uri("https://localhost:7192");
@@ -90,13 +90,15 @@ namespace HPCFodmapProject.Client.TestA
 
         public async Task TestGetFoodIntake()
         {
-               //arrange
+            //arrange
             var mockHttp = new MockHttpMessageHandler();
             var testResponse = @"[{""food"":""hotdog"",""notes"":""bad"",""date"":""2024-03-25T13:15:47.8650963"",""harmful"":true},{""food"":""hotdog"",""notes"":""bad"",""date"":""2024-03-25T13:19:05.3917633"",""harmful"":true},{""food"":""burgers"",""notes"":""was ok"",""date"":""2024-03-28T17:21:28.4438481"",""harmful"":false},{""food"":""hotdog"",""notes"":""was ok"",""date"":""2024-03-28T17:21:37.2425487"",""harmful"":true},{""food"":""cookies"",""notes"":""was ok"",""date"":""2024-03-28T17:21:40.7761023"",""harmful"":false},{""food"":""squash"",""notes"":""was ok"",""date"":""2024-03-28T17:21:44.425102"",""harmful"":false},{""food"":""curry"",""notes"":""was ok"",""date"":""2024-03-28T17:21:48.7910556"",""harmful"":false}]";
 
             mockHttp.When("https://localhost:")
                 .Respond("application/json", testResponse);
 
+
         }
-        
+
+    }
 }

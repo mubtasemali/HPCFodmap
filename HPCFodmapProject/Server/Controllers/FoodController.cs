@@ -150,7 +150,8 @@ public class FoodController : Controller
                            {
 
                                IngredientsName = i.IngredientsName,
-                               harmful = !_service.IsWhiteList(username, i.IngredientsID).Result && i.inFodMap
+                               harmful = !_service.IsWhiteList(username, i.IngredientsID).Result && (i.inFodMap || _service.IsUserFlagged(username, i.IngredientsID).Result),
+                               inFodMap = i.inFodMap
                            }).ToList();
 
         return ingredients;
@@ -175,7 +176,7 @@ public class FoodController : Controller
                        select new IntakeDto
                        {
 
-                           harmful = _service.IsFlaggedFood(username, f.FoodID).Result,
+                           harmful = _service.IsFlaggedFood(username, f.foodName).Result,
                            Food = f.foodName,
                            notes = i.notes,
                            date = i.date,
@@ -295,7 +296,7 @@ public class FoodController : Controller
 
         var flaggedIngredients = (from w in _context.WhiteList
                                   join i in _context.Ingredients on w.IngredientsID equals i.IngredientsID
-                                  where w.userFlagged == 1 && w.UserID == userID
+                                  where w.userFlagged == 1 && w.UserID == userID 
                                   select new FlaggedDto
                                   {
                                       ingredient = i.IngredientsName,
