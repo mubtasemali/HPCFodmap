@@ -30,7 +30,7 @@ public class UserFoodDiaryHttpRepository : IUserFoodDiaryHttpRepository
     {
         List<IngredientsDto>? selectedFoodIngredients = new List<IngredientsDto>();
         selectedFoodIngredients = await _httpClient.GetFromJsonAsync<List<IngredientsDto>>($"api/getIngredients?foodName={foodName}&username={userName}");
-        //if (foodDiary == null)
+        //if (selectedFoodIngredients == null)
         //{
 
         //}

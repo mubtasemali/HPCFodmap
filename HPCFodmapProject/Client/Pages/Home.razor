@@ -4,9 +4,6 @@
 @using HPCFodmapProject.Client.HttpRepository;
 @using Syncfusion.Blazor.Popups
 @using HPCFodmapProject.Shared;
-<!--adding for delete-->
-
-<!--added for new delete functionality-->
 @using Syncfusion.Blazor.Navigations
 @using HPCFodmapProject.Shared
 @using Syncfusion.Blazor.Notifications
@@ -54,16 +51,10 @@
    <input class='e-input' @bind-value="@notes" @bind-value:event="oninput" Placeholder='Notes' type='text'>
 </div>
 
-
-
-
 <!--THE CHAT BOT-->
 <iframe src="https://copilotstudio.microsoft.com/environments/Default-5011c7c6-0ab4-46ab-9ef4-fae74a921a7f/bots/crad4_capstoneProjectBot/webchat?__version__=2"
 frameborder="0" style="width: 1000px; height: 400px; margin: 0 auto; display: block;"></iframe>
 
-<!--<SfButton CssClass="e-info">FAQ</SfButton>
-<SfButton CssClass="e-info">Monash</SfButton>
-<SfButton CssClass="e-info">Docs</SfButton>-->
 
 <!--MODOL FOR INGREDIENTS POP UP FUNCTIONALITY-->
 <SfDialog Width="800px" Height="600px" IsModal="true" @bind-Visible="@IsUserModalVisible">
