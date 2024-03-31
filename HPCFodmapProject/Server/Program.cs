@@ -43,6 +43,7 @@ builder.Services.AddIdentityServer()
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IFoodService, FoodService>();
+builder.Services.AddScoped<IUserServiceAdmin, UserServiceAdmin>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
