@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HPCFodmapProject.Shared", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HPCFodmapProject.Server.Tests", "HPCFodmapProject.Server.Tests\HPCFodmapProject.Server.Tests.csproj", "{3145E994-54E2-4440-8EFD-5AD77953BD3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HPCFodmapProject.Client.TestA", "HPCFodmapProject.Client.TestA\HPCFodmapProject.Client.TestA.csproj", "{627B859D-0575-4CE5-9B51-DA5CF8A0CD70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HPCFodmapProject.Client.TestA", "HPCFodmapProject.Client.TestA\HPCFodmapProject.Client.TestA.csproj", "{627B859D-0575-4CE5-9B51-DA5CF8A0CD70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
