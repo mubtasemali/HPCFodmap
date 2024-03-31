@@ -20,10 +20,9 @@ public partial class UserAdmin
     public SfToast ToastObj;
     private string? toastContent = string.Empty;
     private string? toastSuccess = "e-toast-success";
-    //COMMENTED OUT state has changed methods because it was not recognizing the methods
 
-    //removing override to fix error
-    protected  async Task OnInitializedAsync()
+
+    protected  override async Task OnInitializedAsync()
     {
         await ReloadGrid();
     }
@@ -53,7 +52,7 @@ public partial class UserAdmin
             await ReloadGrid();
             toastContent = "User updated successfully";
             toastSuccess = "e-toast-success";
-          //  StateHasChanged();
+            StateHasChanged();
             await ToastObj.ShowAsync();
         }
         else
@@ -103,14 +102,14 @@ public partial class UserAdmin
                 {
                     await ReloadGrid();
                     toastContent = $"{userEditDto.Email} removed!";
-                   // StateHasChanged();
+                    StateHasChanged();
                     await ToastObj.ShowAsync();
                 }
                 else
                 {
                     toastContent = $"Failed to delete user {userEditDto.Email}";
                     toastSuccess = "e-toast-danger";
-                    //StateHasChanged();
+                    StateHasChanged();
                     await ToastObj.ShowAsync();
                 }
 
@@ -119,7 +118,7 @@ public partial class UserAdmin
             {
                 toastContent = $"Please select a user";
                 toastSuccess = "e-toast-warning";
-                //StateHasChanged();
+                StateHasChanged();
                 await ToastObj.ShowAsync();
             }
         }
