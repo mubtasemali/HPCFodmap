@@ -1,4 +1,126 @@
 ﻿@page "/admin"
-<h1>User Admin</h1>
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Notifications
+@using HPCFodmapProject.Shared
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Popups
+@using HPCFodmapProject.Client.HttpRepository
 
 
+
+@if (Users?.Any() ?? false)
+{
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <SfGrid     DataSource="@Users" 
+                            TValue="UserEditDto" 
+                            AllowPaging="true" 
+                            AllowSorting="true" 
+                            Height="500"
+                            Toolbar="@(new List<object>() { new ItemModel() { Text = "Edit User", PrefixIcon="e-add", Id="GridUserEdit"},
+                                                            new ItemModel() { Text = "Delete User", PrefixIcon="e-remove", Id="GridUserDelete"}})">
+                    <GridEvents     TValue="UserEditDto" 
+                                    OnRecordDoubleClick="UserDoubleCUserEditDtolickHandler"
+                                    RowSelected="UserRowSelectedHandler"
+                                    OnToolbarClick="ToolbarClickHandler"></GridEvents>
+                    <GridColumns>
+                        <GridColumn Field="UserName" HeaderText="Username" Width="150"></GridColumn>
+                        <GridColumn Field="FirstName" HeaderText="First Name" Width="150"></GridColumn>
+                        <GridColumn Field="LastName" HeaderText="Last Name" Width="150"></GridColumn>
+                        <GridColumn Field="Admin" HeaderText="Admin" Width="100">
+                            <Template>
+                                @{
+                                    var userEditDto = context as UserEditDto;
+                                    <SfCheckBox @bind-Checked="userEditDto.Admin" TChecked="bool" @onchange="eventArgs => { ToggleAdminUserEventHandler(eventArgs, userEditDto.Id);}"></SfCheckBox>
+                                }
+                            </Template>
+                        </GridColumn>
+                        <GridColumn Field="EmailConfirmed" HeaderText="Email Confirmed" Width="100">
+                            <Template>
+                                @{
+                                    var userEditDto = context as UserEditDto;
+                                    <SfCheckBox @bind-Checked="userEditDto.EmailConfirmed" TChecked="bool" @onchange="eventArgs => { ToggleEmailConfirmedUserEventHandler(eventArgs, userEditDto.Id);}"></SfCheckBox>
+                                }
+                            </Template>
+                        </GridColumn>
+                    </GridColumns>
+                </SfGrid>
+            </div>
+        </div>
+    </div>
+}
+
+<SfDialog Width="800px" Height="600px" IsModal="true" @bind-Visible="@IsUserModalVisible">
+    <DialogTemplates>
+        <Header>Edit User</Header>
+        <Content>
+            <EditForm Model="userEditDto" OnValidSubmit="AddUserOnSubmit">
+                <DataAnnotationsValidator />
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <label for="email">
+                            Email:
+                        </label>
+                        <SfTextBox @bind-Value="userEditDto.Email" Placeholder="Email" Id="email"></SfTextBox>
+                        <ValidationMessage For="@(() => userEditDto.Email)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <label for="firstName">
+                            First Name:
+                        </label>
+                        <SfTextBox @bind-Value="userEditDto.FirstName" Placeholder="First Name" Id="firstName"></SfTextBox>
+                        <ValidationMessage For="@(() => userEditDto.FirstName)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <label for="lastName">
+                            Last Name:
+                        </label>
+                        <SfTextBox @bind-Value="userEditDto.LastName" Placeholder="Last Name" Id="lastName"></SfTextBox>
+                        <ValidationMessage For="@(() => userEditDto.LastName)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <label for="emailConfirmed">
+                            Email Confirmed:
+                        </label>
+                        <SfCheckBox id="emailConfirmed" @bind-Checked="userEditDto.EmailConfirmed" TChecked="bool"></SfCheckBox>
+                        <ValidationMessage For="@(() => userEditDto.EmailConfirmed)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <label for="admin">
+                            Admin:
+                        </label>
+                        <SfCheckBox id="admin" @bind-Checked="userEditDto.Admin" TChecked="bool"></SfCheckBox>
+                        <ValidationMessage For="@(() => userEditDto.Admin)" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <SfButton IsPrimary="true" Content="Save" typeof="Submit">Update User</SfButton>
+                        <SfButton IsPrimary="true" Content="Cancel" typeof="button" @onclick="@(() => {Reset();})"></SfButton>
+                    </div>
+                </div>
+            </EditForm>
+        </Content>
+    </DialogTemplates>
+</SfDialog>
+
+<SfToast @ref="ToastObj"
+         Content="@toastContent"
+         ShowCloseButton="true"
+         ShowProgressBar="true"
+         CssClass="@toastSuccess"
+         Timeout="3000">
+    <ToastPosition X="Center" Y="Top"></ToastPosition>
+</SfToast>
