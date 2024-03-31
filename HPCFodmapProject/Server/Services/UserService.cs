@@ -8,9 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using HPCFodmapProject.Server.Models;
 using HPCFodmapProject.Server.Data.Migrations;
-using Syncfusion.Blazor.Diagram;
 using HPCFodmapProject.Server.Services;
-using Syncfusion.Blazor.Notifications;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
@@ -20,12 +18,12 @@ namespace HPCFodmapProject.Server.Services
     public class UserService : IUserService
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        
 
-        public UserService(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public UserService(ApplicationDbContext context)
         {
             _context = context;
-            _userManager = userManager;
+           
         }
 
         public async Task<bool> IsWhiteList(string username, int ingredientsId)

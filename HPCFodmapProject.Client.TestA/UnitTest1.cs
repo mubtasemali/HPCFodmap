@@ -87,18 +87,74 @@ namespace HPCFodmapProject.Client.TestA
 
 
         }
-
-        public async Task TestGetFoodIntake()
+        [Test]
+        public async Task AddFoodIntake()
         {
             //arrange
             var mockHttp = new MockHttpMessageHandler();
-            var testResponse = @"[{""food"":""hotdog"",""notes"":""bad"",""date"":""2024-03-25T13:15:47.8650963"",""harmful"":true},{""food"":""hotdog"",""notes"":""bad"",""date"":""2024-03-25T13:19:05.3917633"",""harmful"":true},{""food"":""burgers"",""notes"":""was ok"",""date"":""2024-03-28T17:21:28.4438481"",""harmful"":false},{""food"":""hotdog"",""notes"":""was ok"",""date"":""2024-03-28T17:21:37.2425487"",""harmful"":true},{""food"":""cookies"",""notes"":""was ok"",""date"":""2024-03-28T17:21:40.7761023"",""harmful"":false},{""food"":""squash"",""notes"":""was ok"",""date"":""2024-03-28T17:21:44.425102"",""harmful"":false},{""food"":""curry"",""notes"":""was ok"",""date"":""2024-03-28T17:21:48.7910556"",""harmful"":false}]";
+            var testResponse = true;
+            mockHttp.When("https://localhost:7192/api/addfoodintake?username=m2%40example.com&foodname=burgers&notes=was%20ok").Respond("application/json", JsonConvert.SerializeObject(testResponse));
+            var client = mockHttp.ToHttpClient();
+            client.BaseAddress = new Uri("https://localhost:7192");
+            var userFoodIntakeRepo = new UserFoodDiaryHttpRepository(client);
+            //act
+            var response = await userFoodIntakeRepo.AddFoodIntake( "m@example.com", "burgers","was ok");
+            //assert
+            Assert.That(response, Is.EqualTo(true));
+            //arrange
+            mockHttp = new MockHttpMessageHandler();
+            testResponse = false;
+            mockHttp.When("https://localhost:7192/api/addfoodintake?username=m5%40example.com&foodname=burgers&notes=was%20ok").Respond("application/json", JsonConvert.SerializeObject(testResponse));
+            client = mockHttp.ToHttpClient();
+            client.BaseAddress = new Uri("https://localhost:7192");
+            userFoodIntakeRepo = new UserFoodDiaryHttpRepository(client);
+            //act
+            response = await userFoodIntakeRepo.AddFoodIntake("m4@example.com", "burgers", "was ok");
+            //assert
+            Assert.That(response, Is.EqualTo(false));
+        }
+        [Test]
+        public async Task DeleteFoodIntake()
+        {
+            //arrange
+            var mockHttp = new MockHttpMessageHandler();
+            var testResponse = true;
+            mockHttp.When("https://localhost:7192/api/deleteIntake?username=m2%40example.com").Respond("application/json", JsonConvert.SerializeObject(testResponse));
+            var client = mockHttp.ToHttpClient();
+            client.BaseAddress = new Uri("https://localhost:7192");
+            var userFoodIntakeRepo = new UserFoodDiaryHttpRepository(client);
+            //act
+            DeleteIntakeDto intake = new DeleteIntakeDto
+            {
+                Food = "squash",
+                notes = "was ok",
+                date = new DateTime(2024, 03, 28, 17, 21, 44, 425, DateTimeKind.Utc)
 
-            mockHttp.When("https://localhost:")
-                .Respond("application/json", testResponse);
+            };
 
+            var response = await userFoodIntakeRepo.DeleteFoodIntake("m@example.com", intake);
+            //assert
+            Assert.That(response, Is.EqualTo(true));
+            //arrange
+            mockHttp = new MockHttpMessageHandler();
+            testResponse = false;
+            mockHttp.When("https://localhost:7192/api/deleteIntake?username=m5%40example.com").Respond("application/json", JsonConvert.SerializeObject(testResponse));
+            client = mockHttp.ToHttpClient();
+            client.BaseAddress = new Uri("https://localhost:7192");
+            userFoodIntakeRepo = new UserFoodDiaryHttpRepository(client);
+            //act
+            intake = new DeleteIntakeDto
+            {
+                Food = "squash",
+                notes = "was ok",
+                date = new DateTime(2024, 03, 28, 17, 21, 44, 425, DateTimeKind.Utc)
+
+            };
+             response = await userFoodIntakeRepo.DeleteFoodIntake("m5@example.com", intake);
+            //assert
+            Assert.That(response, Is.EqualTo(false));
+            
 
         }
-
     }
 }
