@@ -8,7 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using HPCFodmapProject.Server.Services;
 
-namespace HPCTech2024SpringProjectBoilerPlate.Server.Controllers;
+namespace HPCFodmapProject.Server.Controllers;
 
 // call to the server (http://localhost:xxxx/api/user) will call some method in here
 // if that call is specific like (http://localhost:xxxx/api/user/) or (http://localhost:xxxx/api/add-movie) calls the appropriate method

@@ -13,6 +13,7 @@ namespace HPCFodmapProject.Client.Pages;
 public partial class UserAdmin
 {
     [Inject]
+    //having trouble UserRepo is not being assigned a value
     IUserHttpRepository UserRepo { get; set; }
     public List<UserEditDto> Users { get; set; } = new List<UserEditDto>();
     private bool IsUserModalVisible { get; set; } = false;
