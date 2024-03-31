@@ -18,6 +18,7 @@ builder.Services.AddHttpClient("HPCFodmapProject.ServerAPI", client => client.Ba
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("HPCFodmapProject.ServerAPI"));
 
 builder.Services.AddScoped<UserFoodDiaryHttpRepository>();
+builder.Services.AddScoped<UserHttpRepository>();
 builder.Services.AddApiAuthorization();
 builder.Services.AddSyncfusionBlazor();
 

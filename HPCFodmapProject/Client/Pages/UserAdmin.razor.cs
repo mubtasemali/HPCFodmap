@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Components.Authorization;
 using static System.Net.WebRequestMethods;
 
 
-namespace HPCTech2024SpringProjectBoilerPlate.Client.Pages;
+namespace HPCFodmapProject.Client.Pages;
 
-public partial class Admin
+public partial class UserAdmin
 {
     [Inject]
     IUserHttpRepository UserRepo { get; set; }
