@@ -15,7 +15,7 @@
                     <GridColumn Field="ingredient" HeaderText="Whitelisted Ingredients" TextAlign="TextAlign.Left" Width="300"></GridColumn>
                     <GridColumn HeaderText="Remove" TextAlign="TextAlign.Right" Width="75">
                         <Template>
-                            @{
+                   bottom @{
                                 var whitelistIng = context as HPCFodmapProject.Shared.WTDto;
                                 <SfCheckBox TChecked="bool" @onchange="eventArgs => {
                                     ToggleWhitelist(eventArgs, whitelistIng.ingredient);
@@ -50,9 +50,9 @@
         </div>
     </div>
 </div>
-
+<div style="padding-bottom: 50px;">
 <center><SfButton @ref="ToggleBtn" @onclick="ReloadGrid" IsPrimary="true" Content="Remove" style="text-align:center"></SfButton></center>
-
+</div>
 <iframe src="https://copilotstudio.microsoft.com/environments/Default-5011c7c6-0ab4-46ab-9ef4-fae74a921a7f/bots/crad4_capstoneProjectBot/webchat?__version__=2"
 frameborder="0" style="width: 1000px; height: 400px; margin: 0 auto; display: block;"></iframe>
 

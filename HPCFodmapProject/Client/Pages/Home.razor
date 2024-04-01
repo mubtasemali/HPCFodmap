@@ -43,16 +43,18 @@
     </div>
 </div>
 <!--For user to add food entries and notes-->
+<div  style="padding-bottom: 50px;">
 <div class='e-input-group'>
     
-     <SfButton  CssClass="e-info" @onclick="@(e=> getUserInputForEntry(@food, @notes))">Add</SfButton>
+     <SfButton style="background-color:rgb(66,114,245); color:white;" CssClass="e-info" @onclick="@(e=> getUserInputForEntry(@food, @notes))">Add</SfButton>
     <input class='e-input' @bind-value="@food" @bind-value:event="oninput" Placeholder='Food' type='text'>
    <input class='e-input' @bind-value="@notes" @bind-value:event="oninput" Placeholder='Notes' type='text'>
+</div>
 </div>
 
 <!--THE CHAT BOT-->
 <iframe src="https://copilotstudio.microsoft.com/environments/Default-5011c7c6-0ab4-46ab-9ef4-fae74a921a7f/bots/crad4_capstoneProjectBot/webchat?__version__=2"
-frameborder="0" style="width: 1000px; height: 400px; margin: 0 auto; display: block;"></iframe>
+frameborder="0" style="width: 100%; height: 400px; margin: 0 auto; display: block;"></iframe>
 
 
 <!--MODOL FOR INGREDIENTS POP UP FUNCTIONALITY-->
