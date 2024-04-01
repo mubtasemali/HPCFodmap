@@ -37,38 +37,31 @@ public partial class Home
     public SfToast ToastObj;
     private string? toastContent = string.Empty;
     private string? toastSuccess = "e-toast-success";
-    //adding variable to populate checklist for whitelist
-    List<WTDto>? whiteLists = new List<WTDto>();
-    List<string>? whiteListStrings = new List<string>();
-    //adding variable to populate checklist for whitelist
-    List<FlaggedDto> flaggedIngredients = new List<FlaggedDto>();
-    List<string>? flaggedList = new List<string>();
 
     protected override async Task OnInitializedAsync()
     {
         var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
-        string uName = UserAuth.Name;
+         string uName = UserAuth.Name;
         this.userN = uName;
         if (UserAuth is not null && UserAuth.IsAuthenticated)
         {
             //calls the gedfoodintake method so we can display food entries in food diary
             foodDiary = await UserFoodDiaryHttpRepository.GetFoodIntake(UserAuth.Name);
-            whiteLists = await GetWhiteLists(UserAuth.Name);
         }
     }
     //method Method gets user input for food name and food notes from the front end after the button is clicked 
     //changed method from void so I can call ReloadGrid method
-    public async Task getUserInputForEntry(string foodI, string notesI)
+   public async Task getUserInputForEntry(string foodI, string notesI)
     {
         var foodResult = UserFoodDiaryHttpRepository.AddFoodIntake(userN, foodI, notesI);
-        if (foodResult != null)
+    if(foodResult != null)
         {
             //need to delay to show most recent change
             await Task.Delay(5000);
             await ReloadGrid();
         }
     }
-    //method for refreshing the page 
+//method for refreshing the page 
     public async Task ReloadGrid()
     {
         var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
@@ -86,19 +79,7 @@ public partial class Home
         {
             foodEntry = args.RowData;
             string foodN = foodEntry.Food;
-            selectedFoodIngredients = await UserFoodDiaryHttpRepository.GetIngredients(foodN, userN).ConfigureAwait(false);
-            whiteLists = await GetWhiteLists(userN);
-            foreach (var whiteList in whiteLists)
-            {
-                Console.WriteLine("whitelist:" + whiteList.ingredient);
-                whiteListStrings.Add(whiteList.ingredient);
-            }
-            flaggedIngredients = await GetFlaggedLists(userN);
-            foreach (var flaggedIngredient in flaggedIngredients)
-            {
-                Console.WriteLine("whitelist:" + flaggedIngredient.ingredient);
-                flaggedList.Add(flaggedIngredient.ingredient);
-            }
+            selectedFoodIngredients = await UserFoodDiaryHttpRepository.GetIngredients(foodN,userN).ConfigureAwait(false);
             IsUserModalVisible = true;
         }
         catch
@@ -112,8 +93,6 @@ public partial class Home
     public async Task closeIngredientsPopUp()
     {
         IsUserModalVisible = false;
-        whiteLists = await GetWhiteLists(userN);
-        flaggedIngredients = await GetFlaggedLists(userN);
     }
     //adding method for delete and edition functionality to handle click
     public async Task ToolbarClickHandler(ClickEventArgs args)
@@ -149,9 +128,9 @@ public partial class Home
             await ToastObj.ShowAsync();
         }
     }
+    
 
-
-
+   
 
     //ading another method for delete function: selecting an entry
     public async Task UserRowSelectedHandler(RowSelectEventArgs<IntakeDto> args)
@@ -162,9 +141,9 @@ public partial class Home
         }
         catch
         {
-            toastContent = "Error accessing food diary in grid";
-            toastSuccess = "e-toast-danger";
-            await ToastObj.ShowAsync();
+             toastContent = "Error accessing food diary in grid";
+             toastSuccess = "e-toast-danger";
+             await ToastObj.ShowAsync();
         }
     }
 
@@ -185,51 +164,6 @@ public partial class Home
         {
             await Http.GetAsync($"api/updateFlaggedFood?username={UserAuth.Name}&IngName={ingToUpdate}");
         }
-    }
-    //adding to get whitelist check
-    public bool GetWhiteList(string ingredientName)
-    {
-        bool returnValue = false;
-        if (whiteListStrings.Contains(ingredientName))
-        {
-            returnValue = true;
-        }
-        Console.WriteLine("name: " + ingredientName);
-
-
-        return returnValue;
-    }
-
-    //adding to get whitelist
-    public async Task<List<WTDto>> GetWhiteLists(string userName)
-    {
-        List<WTDto>? whiteLists = new List<WTDto>();
-        whiteLists = await Http.GetFromJsonAsync<List<WTDto>>("api/getWhitelist?username=" + userN);
-        return whiteLists;
-
-    }
-
-    //adding to get flagges
-    public async Task<List<FlaggedDto>> GetFlaggedLists(string userName)
-    {
-        List<FlaggedDto>? flaggedList = new List<FlaggedDto>();
-        flaggedList = await Http.GetFromJsonAsync<List<FlaggedDto>>("api/GetUserFlagged?username=" + userN);
-
-        return flaggedList;
-    }
-
-    //method for checkbox to call
-    public bool GetFlaggedList(string ingredientName)
-    {
-        bool returnValue = false;
-        if (flaggedList.Contains(ingredientName))
-        {
-            returnValue = true;
-        }
-        
-
-
-        return returnValue;
     }
 }
     
