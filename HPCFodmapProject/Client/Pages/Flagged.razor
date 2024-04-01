@@ -15,7 +15,7 @@
                     <GridColumn Field="ingredient" HeaderText="Whitelisted Ingredients" TextAlign="TextAlign.Left" Width="300"></GridColumn>
                     <GridColumn HeaderText="Remove" TextAlign="TextAlign.Right" Width="75">
                         <Template>
-                   bottom @{
+                    @{
                                 var whitelistIng = context as HPCFodmapProject.Shared.WTDto;
                                 <SfCheckBox TChecked="bool" @onchange="eventArgs => {
                                     ToggleWhitelist(eventArgs, whitelistIng.ingredient);
