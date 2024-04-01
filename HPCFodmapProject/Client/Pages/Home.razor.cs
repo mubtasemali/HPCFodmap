@@ -104,6 +104,7 @@ public partial class Home
     public async Task closeIngredientsPopUp()
     {
         IsUserModalVisible = false;
+        whiteLists = await GetWhiteLists(userN);
     }
     //adding method for delete and edition functionality to handle click
     public async Task ToolbarClickHandler(ClickEventArgs args)

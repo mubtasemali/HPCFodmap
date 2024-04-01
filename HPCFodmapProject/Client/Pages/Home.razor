@@ -73,9 +73,15 @@ frameborder="0" style="width: 100%; height: 400px; margin: 0 auto; display: bloc
                         <Template>
                             @{
                                 var whitelistIng = context as HPCFodmapProject.Shared.IngredientsDto;
+                                 <SfCheckBox TChecked="bool"  @onchange="eventArgs => {
+                                    ToggleWhitelist(eventArgs, whitelistIng.IngredientsName);
+                                }"></SfCheckBox>
+                                
                                 <SfCheckBox TChecked="bool" Checked="GetWhiteList(whitelistIng.IngredientsName)" @onchange="eventArgs => {
                                     ToggleWhitelist(eventArgs, whitelistIng.IngredientsName);
                                 }"></SfCheckBox>
+
+                                
                                 
                             }
                         </Template>
