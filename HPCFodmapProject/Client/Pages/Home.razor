@@ -17,26 +17,37 @@
     <div class="row">
         <div class="col">
             <SfGrid @ref="Grid"
-            DataSource="@foodDiary" 
-            TValue="IntakeDto" 
-            AllowPaging="true" 
-            AllowSorting="true" 
-            Height="500"
-            Toolbar=@(new List<object>() {
-                new ItemModel() {Text = "Delete", PrefixIcon="e.delete", Id="DeleteEntry"}})>
-            <GridEvents
-                TValue="IntakeDto" 
-                OnRecordDoubleClick="UserDoubleClickHandler"
-                RowSelected="UserRowSelectedHandler"
-            OnToolbarClick="ToolbarClickHandler">
-
-            </GridEvents>
+                    DataSource="@foodDiary"
+                    TValue="IntakeDto"
+                    AllowPaging="true"
+                    AllowSorting="true"
+                    Height="500"
+                    Toolbar=@(new List<object>() {
+                    new ItemModel() {Text = "Delete", PrefixIcon="e.delete", Id="DeleteEntry"}})>
+                <GridEvents TValue="IntakeDto"
+                            OnRecordDoubleClick="UserDoubleClickHandler"
+                            RowSelected="UserRowSelectedHandler"
+                            OnToolbarClick="ToolbarClickHandler">
+                </GridEvents>
                 <GridColumns>
-
                     <GridColumn HeaderText="Food Intake" Field="Food" TextAlign="TextAlign.Left" Width="300"></GridColumn>
-                  
                     <GridColumn HeaderText="Notes" Field="notes" TextAlign="TextAlign.Left" Width="300"></GridColumn>
                     <GridColumn HeaderText="Date" Field="date" TextAlign="TextAlign.Left" Width="300"></GridColumn>
+                    <GridColumn HeaderText="Harmful" Field="harmful" TextAlign="TextAlign.Left" Width="100">
+                        <Template Context="data">
+                            @{
+                                var intakeDto = data as IntakeDto;
+                                if (intakeDto != null && intakeDto.harmful)
+                                {
+                                    <span style="color:red">@intakeDto.harmful.ToString()</span>
+                                }
+                                else
+                                {
+                                    <span>@intakeDto.harmful.ToString()</span>
+                                }
+                            }
+                        </Template>
+                    </GridColumn>
                 </GridColumns>
             </SfGrid>
         </div>
