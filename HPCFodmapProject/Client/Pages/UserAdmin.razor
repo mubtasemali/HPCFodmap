@@ -21,10 +21,11 @@
                             AllowPaging="true" 
                             AllowSorting="true" 
                             Height="500"
-                            Toolbar="@(new List<object>() { new ItemModel() { Text = "Edit User", PrefixIcon="e-add", Id="GridUserEdit"},
+                            Toolbar="@(new List<object>() {
                                                             new ItemModel() { Text = "Delete User", PrefixIcon="e-remove", Id="GridUserDelete"}})">
                     <GridEvents     TValue="UserEditDto" 
                                 
+                                    OnRecordDoubleClick="UserDoubleClickHandler"
                                     RowSelected="UserRowSelectedHandler"
                                     OnToolbarClick="ToolbarClickHandler"></GridEvents>
                     <GridColumns>
@@ -60,15 +61,7 @@
         <Content>
             <EditForm Model="userEditDto" OnValidSubmit="AddUserOnSubmit">
                 <DataAnnotationsValidator />
-                <div class="form-group row">
-                    <div class="col-md-12">
-                        <label for="email">
-                            Email:
-                        </label>
-                        <SfTextBox @bind-Value="userEditDto.Email" Placeholder="Email" Id="email"></SfTextBox>
-                        <ValidationMessage For="@(() => userEditDto.Email)" />
-                    </div>
-                </div>
+             
                 <div class="form-group row">
                     <div class="col-md-12">
                         <label for="firstName">
