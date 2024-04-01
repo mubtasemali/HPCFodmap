@@ -6,84 +6,67 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using HPCFodmapProject.Server.Services;
 
+namespace HPCFodmapProject.Server.Controllers;
 
-namespace HPCFodmapProject.Server.Controllers
+// call to the server (http://localhost:xxxx/api/user) will call some method in here
+// if that call is specific like (http://localhost:xxxx/api/user/) or (http://localhost:xxxx/api/add-movie) calls the appropriate method
+public class UserController : Controller
 {
-    public class UserController : Controller
+    private readonly IUserServiceAdmin _userServiceAdmin;
+
+    public UserController(IUserServiceAdmin userServiceAdmin)
     {
-       
-        private readonly ApplicationDbContext _context;
-        public UserController(ApplicationDbContext context)
-        {
-            _context = context;
-
-        }
-
-        [HttpGet]
-        [Route("api/get-user")]
-        public async Task<ActionResult<ApplicationUserDto>> GetUserInfoByUserName(string userName)
-        {
-
-            if (userName == null)
-            {
-               return NotFound();
-            }
-            if (_context.Users == null)
-            {
-                return NotFound();
-            }
-
-                var user = _context.Users.SingleOrDefault(item => item.UserName == userName);
-
-
-
-            var userDto = new ApplicationUserDto
-            {
-                firstname = user.firstname,
-                lastname = user.lastname,
-                phoneNumber = user.PhoneNumber
-            };
-
-            return userDto;
-        }
-
-        
-
-        [HttpPut]
-        //[ValidateAntiForgeryToken]
-        [Route("api/update-user-info")]
-        public async Task <IActionResult> UpdateUserInfo(string userName, ApplicationUserDto User)
-        {
-
-            if (userName == null)
-            {
-                return NotFound();
-            }
-            if (_context.Users == null)
-            {
-                return NotFound();
-            }
-
-            var user = _context.Users.SingleOrDefault(item => item.UserName == userName);
-            user.firstname = User.firstname;
-            user.lastname = User.lastname;
-            user.PhoneNumber = User.phoneNumber;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
-        }
-
-
-       
+        _userServiceAdmin = userServiceAdmin;
     }
-}
 
+    [HttpGet]
+    [Route("api/toggle-admin")]
+    [Authorize(Roles = "Admin")]
+    public async Task<bool> ToggleAdmin(string userId)
+    {
+        bool res = await _userServiceAdmin.ToggleAdminService(userId);
+        return res;
+    }
+
+    //toggle-email-confirmed
+    [HttpGet]
+    [Route("api/toggle-email-confirmed")]
+    [Authorize(Roles = "Admin")]
+    public async Task<bool> ToggleEmailConfirmed(string userId)
+    {
+        bool res = await _userServiceAdmin.ToggleEmailConfirmedService(userId);
+        return res;
+    }
+
+ 
+
+    [HttpPost]
+    [Route("api/update-user")]
+    [Authorize(Roles = "Admin")]
+    public async Task<bool> UpdateUser([FromBody] UserEditDto user)
+    {
+        var res = await _userServiceAdmin.UpdateUser(user);
+        return res;
+    }
+
+    //api/delete-user
+    [HttpGet]
+    [Route("api/delete-user")]
+    [Authorize(Roles = "Admin")]
+    public async Task<bool> DeleteUser(string userId)
+    {
+        return await _userServiceAdmin.DeleteUser(userId);
+    }
+
+    [HttpGet]
+    [Route("api/users")]
+    [Authorize(Roles="Admin")]
+    public async Task<List<UserEditDto>> GetAllUsers()
+    {
+        return await _userServiceAdmin.GetAllUsers();
+    }
+
+    
+}
