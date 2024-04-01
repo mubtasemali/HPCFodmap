@@ -37,6 +37,10 @@ public partial class Home
     public SfToast ToastObj;
     private string? toastContent = string.Empty;
     private string? toastSuccess = "e-toast-success";
+    //adding variable to populate checklist for whitelist
+    List<WTDto>? whiteLists = new List<WTDto>();
+    List<string>? whiteListStrings = new List<string>();
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -47,6 +51,7 @@ public partial class Home
         {
             //calls the gedfoodintake method so we can display food entries in food diary
             foodDiary = await UserFoodDiaryHttpRepository.GetFoodIntake(UserAuth.Name);
+            whiteLists = await GetWhiteLists(UserAuth.Name);
         }
     }
     //method Method gets user input for food name and food notes from the front end after the button is clicked 
@@ -80,6 +85,12 @@ public partial class Home
             foodEntry = args.RowData;
             string foodN = foodEntry.Food;
             selectedFoodIngredients = await UserFoodDiaryHttpRepository.GetIngredients(foodN,userN).ConfigureAwait(false);
+            whiteLists = await GetWhiteLists(userN);
+            foreach(var whiteList in whiteLists)
+            {
+                Console.WriteLine("whitelist:" + whiteList.ingredient);
+                whiteListStrings.Add(whiteList.ingredient);
+            }
             IsUserModalVisible = true;
         }
         catch
@@ -164,6 +175,33 @@ public partial class Home
         {
             await Http.GetAsync($"api/updateFlaggedFood?username={UserAuth.Name}&IngName={ingToUpdate}");
         }
+    }
+    //adding to get whitelist check
+    public bool GetWhiteList(string ingredientName)
+    {
+        bool returnValue = false;
+        if (whiteListStrings.Contains(ingredientName))
+        {
+            returnValue = true;
+        }
+        Console.WriteLine("name: " + ingredientName);
+
+        
+        return returnValue;
+    }
+
+    //adding to get whitelist
+    public async Task<List<WTDto>> GetWhiteLists(string userName)
+    {
+        List<WTDto>? whiteLists = new List<WTDto> ();
+        whiteLists = await Http.GetFromJsonAsync<List<WTDto>>("api/getWhitelist?username=" + userN);
+        foreach (WTDto whitelist in whiteLists)
+        {
+            Console.WriteLine("Whitelist: " + whitelist.ingredient);
+        }
+        return whiteLists;
+
+
     }
 }
     
