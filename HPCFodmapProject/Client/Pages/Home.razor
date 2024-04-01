@@ -45,7 +45,7 @@
 <!--For user to add food entries and notes-->
 <div class='e-input-group'>
     
-     <SfButton  CssClass="e-info" @onclick="@(e=> getUserInputForEntry(@food, @notes))">Add</SfButton>
+     <SfButton style="background-color:rgb(66,114,245); color:white;" CssClass="e-info" @onclick="@(e=> getUserInputForEntry(@food, @notes))">Add</SfButton>
     <input class='e-input' @bind-value="@food" @bind-value:event="oninput" Placeholder='Food' type='text'>
    <input class='e-input' @bind-value="@notes" @bind-value:event="oninput" Placeholder='Notes' type='text'>
 </div>
