@@ -90,7 +90,11 @@ frameborder="0" style="width: 100%; height: 400px; margin: 0 auto; display: bloc
                         <Template>
                             @{
                                 var flaggedIng = context as HPCFodmapProject.Shared.IngredientsDto;
-                                <SfCheckBox TChecked="bool" @onchange="eventArgs => {
+                                <SfCheckBox TChecked="bool"  @onchange="eventArgs => {
+                                    ToggleFlagged(eventArgs, flaggedIng.IngredientsName);
+                                }"></SfCheckBox>
+
+                                <SfCheckBox TChecked="bool" Checked="GetFlaggedList(flaggedIng.IngredientsName)" @onchange="eventArgs => {
                                     ToggleFlagged(eventArgs, flaggedIng.IngredientsName);
                                 }"></SfCheckBox>
                             }
