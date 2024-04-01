@@ -16,7 +16,7 @@ builder.Services.AddHttpClient("HPCFodmapProject.ServerAPI", client => client.Ba
 
 // Supply HttpClient instances that include access tokens when making requests to the server project
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("HPCFodmapProject.ServerAPI"));
-
+builder.Services.AddScoped<IUserHttpRepository, UserHttpRepository>();
 builder.Services.AddScoped<UserFoodDiaryHttpRepository>();
 builder.Services.AddScoped<UserHttpRepository>();
 builder.Services.AddApiAuthorization();
